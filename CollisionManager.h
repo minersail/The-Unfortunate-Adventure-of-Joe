@@ -13,6 +13,7 @@ public:
 	// Checks all entities in a chunk against all other entities in that chunk
 	void CheckChunkCollisions(int chunk);
 	void Add(int chunk, Entity* ent);
+	void Remove(int chunk, Entity* ent);
 
 private:
 	// Master list of lists; Each sub-list contains all entities in a chunk

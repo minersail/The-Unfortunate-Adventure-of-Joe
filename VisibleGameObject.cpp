@@ -5,19 +5,19 @@
 VisibleGameObject::VisibleGameObject(float initX, float initY, std::string textureID)
 	: pendingDestruction(false), frameCount(0)
 {
-	SetPosition(initX, initY);
+	SetPosition(initX * 16, initY * 16);
 	_sprite.setTexture(Game::GetResourceManager().Get(textureID));
-	ChunkID = std::floor(initX / Game::SCREEN_WIDTH) + std::floor(initY / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
+	ChunkID = std::floor(initX / Game::SCREEN_WIDTH * 16) + std::floor(initY / Game::SCREEN_HEIGHT * 16) * Game::YCHUNKS;
 	textureName = textureID;
 }
 
 VisibleGameObject::VisibleGameObject(float initX, float initY, std::string textureID, std::string name)
 	: pendingDestruction(false), frameCount(0)
 {
-	SetPosition(initX, initY);
+	SetPosition(initX * 16, initY * 16);
 	_sprite.setTexture(Game::GetResourceManager().Get(textureID));
 	Game::GetObjectManager().Add(name, this);
-	ChunkID = std::floor(initX / Game::SCREEN_WIDTH) + std::floor(initY / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
+	ChunkID = std::floor(initX / Game::SCREEN_WIDTH * 16) + std::floor(initY / Game::SCREEN_HEIGHT * 16) * Game::YCHUNKS;
 	textureName = textureID;
 }
 

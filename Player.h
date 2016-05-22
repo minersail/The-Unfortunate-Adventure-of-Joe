@@ -8,6 +8,7 @@ public:
 	~Player();
 
 	void Update(float deltaTime, sf::Event ev);
+	void Draw(sf::RenderWindow& rw);
 	void Walk(Direction _direction);
 
 	void UpdateChunk();

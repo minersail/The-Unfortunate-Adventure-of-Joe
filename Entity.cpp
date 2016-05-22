@@ -10,7 +10,10 @@ Entity::Entity(float initX, float initY, std::string textureID, std::string name
 	SetHitBox(GetTextureRect());
 	// Collision calculations require the origin to be at center
 	GetSprite().setOrigin(GetHitBox().width / 2, GetHitBox().height / 2);
-	Game::GetCollisionManager().Add(ChunkID, this);
+	// Account for change in position by setting origin
+	SetPosition(GetPosition().x + GetHitBox().width / 2, GetPosition().y + GetHitBox().height / 2);
+
+	InitializeChunks();
 }
 
 Entity::Entity(float initX, float initY, std::string textureID, std::string name, sf::IntRect customHB)
@@ -21,7 +24,10 @@ Entity::Entity(float initX, float initY, std::string textureID, std::string name
 	SetHitBox(customHB);
 	// Collision calculations require the origin to be at center
 	GetSprite().setOrigin(GetHitBox().width / 2, GetHitBox().height / 2);
-	Game::GetCollisionManager().Add(ChunkID, this);
+	// Account for change in position by setting origin
+	SetPosition(GetPosition().x + GetHitBox().width / 2, GetPosition().y + GetHitBox().height / 2);
+
+	InitializeChunks();
 }
 
 Entity::~Entity()
@@ -41,8 +47,8 @@ std::vector<sf::Vector2f> Entity::GetVertices()
 	float angleoffset = atan2f(GetHitBox().height, GetHitBox().width); // Angle theta between horizontal and diagonal
 	float PI = 3.1415926535f; // Apple, of course
 
-	float x = GetPosition().x; // Syntatic
-	float y = GetPosition().y; // Sugar
+	float x = GetPosition().x + GetHitBox().left / 2; // Hitbox's origin
+	float y = GetPosition().y + GetHitBox().top / 2;
 
 	sf::Vector2f vert1(x + offset * cos(angle + angleoffset), y + offset * sin(angle + angleoffset)); // Quadrant 4
 	sf::Vector2f vert2(x + offset * cos(angle + PI - angleoffset), y + offset * sin(angle + PI - angleoffset)); // Quadrant 3
@@ -172,7 +178,7 @@ bool Entity::CheckForCollision(Entity* other)
 		TestMTV.first = sf::Vector2f(-TestMTV.first.x, -TestMTV.first.y);
 	}
 
-	if (collided) // If there already has been a collision this tick
+	/*if (collided) // If there already has been a collision this tick
 	{
 		float magnitude;
 		sf::Vector2f v1, v2, result;
@@ -191,11 +197,26 @@ bool Entity::CheckForCollision(Entity* other)
 		}
 	}
 	else // Otherwise just store the TestMTV into MTV
+	{*/
+		
+	MTV = TestMTV;
+
+	if (immovable && !other->immovable)
 	{
-		MTV = TestMTV;
+		other->SetPosition(other->GetPosition().x + MTV.first.x * MTV.second, other->GetPosition().y + MTV.first.y * MTV.second);
+	}
+	else if (!immovable && other->immovable)
+	{
+		SetPosition(GetPosition().x - MTV.first.x * MTV.second, GetPosition().y - MTV.first.y * MTV.second);
+	}
+	else if (!immovable && !other->immovable)
+	{
+		SetPosition(GetPosition().x - MTV.first.x * MTV.second / 2, GetPosition().y - MTV.first.y * MTV.second / 2);
+		other->SetPosition(other->GetPosition().x - MTV.first.x * MTV.second / 2, other->GetPosition().y - MTV.first.y * MTV.second / 2);
 	}
 
-	other->MTV = MTV;
+	other->MTV.first = MTV.first;
+	other->MTV.second = -MTV.second;
 	return true;
 }
 
@@ -213,4 +234,31 @@ void Entity::SetHitBox(sf::Rect<int> newRect)
 sf::Rect<int> Entity::GetHitBox()
 {
 	return HitBox;
+}
+
+void Entity::InitializeChunks()
+{
+	int topLeftChunk = std::floor((GetPosition().x - GetHitBox().width / 2) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y - GetHitBox().height / 2) / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
+	int botRightChunk = std::floor((GetPosition().x + GetHitBox().width / 2) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y + GetHitBox().height / 2) / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
+
+	if (topLeftChunk == botRightChunk)
+	{
+		Game::GetCollisionManager().Add(ChunkID, this);
+	}
+	else // The entity occupies more than one chunk
+	{
+		int topRightChunk = std::floor((GetPosition().x + GetHitBox().width / 2) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y - GetHitBox().height / 2) / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
+		int botLeftChunk = std::floor((GetPosition().x - GetHitBox().width / 2) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y + GetHitBox().height / 2) / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
+
+		int chunksX = topRightChunk - topLeftChunk + 1; // How many chunks in the x direction the entity occupies
+		int chunksY = (botLeftChunk - topLeftChunk) / Game::XCHUNKS + 1; // How many chunks in the y direction the entity occupies
+
+		for (int i = 0; i < chunksY; i++)
+		{
+			for (int j = 0; j < chunksX; j++)
+			{
+				Game::GetCollisionManager().Add(topLeftChunk + i * Game::XCHUNKS + j, this); // Add the entity to the EntityLists of all the chunks it occupies
+			}
+		}
+	}
 }

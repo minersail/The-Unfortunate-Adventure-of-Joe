@@ -54,3 +54,22 @@ void CollisionManager::Add(int chunk, Entity* ent)
 {
 	EntityList[chunk].push_back(ent);
 }
+
+void CollisionManager::Remove(int chunk, Entity* ent)
+{
+	// Iterating from the reverse will be faster since entities switching chunks will most likely be at the end
+	std::vector<Entity*>::reverse_iterator it = EntityList[chunk].rbegin();
+	std::vector<Entity*>::reverse_iterator end = EntityList[chunk].rend();
+	while (it != end)
+	{
+		if (*it == ent)
+		{
+			EntityList[chunk].erase(--(it.base()));
+			return;
+		}
+		else
+		{
+			it++;
+		}
+	}
+}

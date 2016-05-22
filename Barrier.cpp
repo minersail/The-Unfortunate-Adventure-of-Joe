@@ -48,17 +48,16 @@ void Barrier::Animate()
 
 	if (tiled) // Barrier type 4
 	{
-		// Manually repeat the texture
-		// sf::Texture.setRepeated() will not work because it is dependant on using large textureRects, and that interferes with animation
+		// Manually repeat the texture; sf::Texture.setRepeated() will not work because it interferes with animation
 		for (int i = 0; i < tiledSize.x; ++i)
 		{
 			for (int j = 0; j < tiledSize.y; ++j)
 			{
 				// get a pointer to the current tile's quad
-				sf::Vertex* quad = &VerticeList[(i + j * tiledSize.y) * 4];
+				sf::Vertex* quad = &VerticeList[(j + i * tiledSize.y) * 4];
 
 				// define its 4 corners
-				// We subtract GetHitBox().width and height in order for GetPosition() to return the center
+				// We subtract GetHitBox().width and height in order for GetPosition() to return the top-left corner
 				quad[0].position = sf::Vector2f(GetPosition().x - GetHitBox().width / 2 + i * 16, GetPosition().y - GetHitBox().height / 2 + j * 16);
 				quad[1].position = sf::Vector2f(GetPosition().x - GetHitBox().width / 2 + (i + 1) * 16, GetPosition().y - GetHitBox().height / 2 + j * 16);
 				quad[2].position = sf::Vector2f(GetPosition().x - GetHitBox().width / 2 + (i + 1) * 16, GetPosition().y - GetHitBox().height / 2 + (j + 1) * 16);
@@ -80,6 +79,7 @@ void Barrier::Animate()
 		sf::Vector2i frameSize(GetSprite().getTexture()->getSize().x / maxFrame, GetSprite().getTexture()->getSize().y);
 		SetTextureRect(frameSize.x * (currentFrame - 1), 0, GetHitBox().width, GetHitBox().height);
 	}
+	collided = false;
 }
 
 void Barrier::Draw(sf::RenderWindow& rw)

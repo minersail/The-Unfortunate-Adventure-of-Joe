@@ -25,6 +25,8 @@ public:
 	void SetHitBox(sf::Rect<int> newRect);
 	sf::Rect<int> GetHitBox();
 
+	void InitializeChunks();
+
 	/* Minimum Translation Vector, the smallest vector required
 	to push two objects out of intersection; First item is
 	direction, second is magitude */

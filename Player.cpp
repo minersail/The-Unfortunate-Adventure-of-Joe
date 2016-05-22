@@ -5,7 +5,7 @@
 //#include "NPC.h"
 
 Player::Player(float initX, float initY, std::string textureID, std::string name)
-	: Entity(initX, initY, textureID, name, sf::IntRect(0, 0, JOE_WIDTH, JOE_HEIGHT))
+	: Entity(initX, initY, textureID, name, sf::IntRect(0, JOE_HEIGHT / 3, JOE_WIDTH, JOE_HEIGHT / 2))
 {
 	SetTextureRect(0, 0, JOE_HEIGHT, JOE_WIDTH);
 	GetSprite().setOrigin(JOE_WIDTH / 2, JOE_HEIGHT / 2);
@@ -78,23 +78,13 @@ void Player::Update(float deltaTime, sf::Event ev)
 		keyPressed = None;
 	}
 
-	/*if (ev.type == sf::Event::MouseButtonPressed && ev.key.code == sf::Mouse::Left)
-	{
-	std::string npcFilename = "Images/npc" + std::to_string(rand() % 2 + 1) + ".png";
-	std::cout << npcFilename << std::endl;
-	NPC* n1 = new NPC(npcFilename);
-	n1->setPosition(sf::Mouse::getPosition(Game::mainWindow).x, sf::Mouse::getPosition(Game::mainWindow).y);
-
-	Game::_objectQueue.push_back(std::pair<std::string, VisibleGameObject*>("NPC", n1));
-	Game::entityList.push_back(n1);
-	}*/
 	if (collided)
 	{
-		SetPosition(GetPosition().x - MTV.first.x * MTV.second, GetPosition().y - MTV.first.y * MTV.second);
 		collided = false;
 	}
 
-	Game::SetView(GetPosition().x, GetPosition().y);
+	Game::SetView(std::max(float(Game::SCREEN_WIDTH / 2), std::min(float(Game::SCREEN_WIDTH * Game::XCHUNKS - Game::SCREEN_WIDTH / 2), GetPosition().x)), 
+				  std::max(float(Game::SCREEN_HEIGHT / 2), std::min(float(Game::SCREEN_HEIGHT * Game::YCHUNKS - Game::SCREEN_HEIGHT / 2), GetPosition().y)));
 }
 
 void Player::Walk(Player::Direction _direction)
@@ -149,25 +139,42 @@ void Player::Walk(Player::Direction _direction)
 
 void Player::UpdateChunk() // CHANGE WHEN THERE ARE MORE THAN 9 CHUNKS
 {
-	int newChunk = std::floor(GetPosition().x / Game::SCREEN_WIDTH) + std::floor(GetPosition().y / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
+	// Offset to top-left corner of player's hitbox
+	int newChunk = std::floor((GetPosition().x + GetHitBox().width / 2) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y + GetHitBox().height / 2) / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
 	if (newChunk != ChunkID) // There has been a change in chunk
 	{
 		if (newChunk < ChunkID - 1) // Up
 		{
-			//std::cout << "Up" << std::endl;
+			std::cout << "Up" << std::endl;
 		}
 		else if (newChunk < ChunkID) // Left
 		{
-			//std::cout << "Left" << std::endl;
+			std::cout << "Left" << std::endl;
 		}
 		else if(newChunk > ChunkID + 1) // Down
 		{
-			//std::cout << "Down" << std::endl;
+			std::cout << "Down" << std::endl;
 		}
 		else if (newChunk > ChunkID) // Right
 		{
-			//std::cout << "Right" << std::endl;
+			std::cout << "Right" << std::endl;
 		}
+		Game::GetCollisionManager().Remove(ChunkID, this);
 		ChunkID = newChunk;
+		Game::GetCollisionManager().Add(ChunkID, this);
 	}
+}
+
+void Player::Draw(sf::RenderWindow& rw)
+{
+	rw.draw(GetSprite());
+	/*sf::RectangleShape hitbox;
+	hitbox.setSize(sf::Vector2f(GetHitBox().width, GetHitBox().height));
+	hitbox.setOutlineColor(sf::Color::Red);
+	hitbox.setFillColor(sf::Color(255, 255, 255, 0));
+	hitbox.setOutlineThickness(2);
+	hitbox.setOrigin(GetHitBox().width / 2, GetHitBox().height / 2);
+	hitbox.setPosition(GetPosition().x, GetPosition().y);
+	hitbox.setPosition(GetPosition().x + GetHitBox().left / 2, GetPosition().y + GetHitBox().top / 2);
+	rw.draw(hitbox);*/
 }
