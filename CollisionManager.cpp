@@ -4,8 +4,12 @@
 #include "Game.h"
 
 CollisionManager::CollisionManager()
-	: ChunkList({0, 1, 2, 3, 4, 5, 6, 7, 8})
 {
+	for (int i = 0; i < 9; i++)
+	{
+		ChunkList.push_back(i);
+	}
+
 	for (int i = 0; i < Game::XCHUNKS * Game::YCHUNKS; i++) // One sub-vector for every chunk
 	{
 		std::vector<Entity*> li;

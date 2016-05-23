@@ -77,7 +77,7 @@ void Barrier::Animate()
 	{
 		// Size of one frame
 		sf::Vector2i frameSize(GetSprite().getTexture()->getSize().x / maxFrame, GetSprite().getTexture()->getSize().y);
-		SetTextureRect(frameSize.x * (currentFrame - 1), 0, GetHitBox().width, GetHitBox().height);
+		SetTextureRect(frameSize.x * (currentFrame - 1), 0, GetTextureRect().width, GetTextureRect().height);
 	}
 	collided = false;
 }

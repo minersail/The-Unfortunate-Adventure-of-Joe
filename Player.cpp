@@ -95,25 +95,25 @@ void Player::Walk(Player::Direction _direction)
 		case Up:
 		{
 			SetTextureRect(0, GetSprite().getTextureRect().top, JOE_WIDTH, JOE_HEIGHT);
-			SetPosition(GetPosition().x, GetPosition().y - 3);
+			SetPosition(GetPosition().x, GetPosition().y - 2);
 			break;
 		}
 		case Down:
 		{
 			SetTextureRect(34, GetSprite().getTextureRect().top, JOE_WIDTH, JOE_HEIGHT);
-			SetPosition(GetPosition().x, GetPosition().y + 3);
+			SetPosition(GetPosition().x, GetPosition().y + 2);
 			break;
 		}
 		case Left:
 		{
 			SetTextureRect(51, GetSprite().getTextureRect().top, JOE_WIDTH, JOE_HEIGHT);
-			SetPosition(GetPosition().x - 3, GetPosition().y);
+			SetPosition(GetPosition().x - 2, GetPosition().y);
 			break;
 		}
 		case Right:
 		{
 			SetTextureRect(17, GetSprite().getTextureRect().top, JOE_WIDTH, JOE_HEIGHT);
-			SetPosition(GetPosition().x + 3, GetPosition().y);
+			SetPosition(GetPosition().x + 2, GetPosition().y);
 			break;
 		}
 		case None:

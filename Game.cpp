@@ -34,7 +34,7 @@ void Game::Start()
 	Barrier* WestBorder = new Barrier(0, 0, "Fence", "West Border", sf::Vector2i(1, 149));
 
 	Barrier* animLake = new Barrier(87, 87, "Water", "lake 1", sf::Vector2i(5, 5), 3);
-	Barrier* hut1 = new Barrier(81, 88, "Stone Hut", "hut 1", 2);
+	Barrier* hut1 = new Barrier(80, 86, "Brown House", "hut 1");
 	Barrier* fencen1 = new Barrier(50, 51, "Fence", "Home North Fence 1", sf::Vector2i(23, 1));
 	Barrier* fencen2 = new Barrier(77, 51, "Fence", "Home North Fence 2", sf::Vector2i(23, 1));
 	Barrier* fence2 = new Barrier(50, 99, "Fence", "Home South Fence 1", sf::Vector2i(23, 1));
@@ -54,13 +54,13 @@ void Game::Start()
 	Barrier* fence7 = new Barrier(100, 100, "Fence", "East Fence 1", sf::Vector2i(1, 48));
 	for (int j = 0; j < 4; j++)
 	{
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 3; i++)
 		{
-			Barrier* hut = new Barrier(57 + i * 4, 110 + j * 10, "Stone Hut", "hut " + std::to_string(i + j * 4), 2);
+			Barrier* hut = new Barrier(56 + i * 6, 109 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4));
 		}
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 3; i++)
 		{
-			Barrier* hut = new Barrier(77 + i * 4, 110 + j * 10, "Stone Hut", "hut " + std::to_string(i + j * 4 + 4), 2);
+			Barrier* hut = new Barrier(77 + i * 6, 109 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4 + 4));
 		}
 	}
 
