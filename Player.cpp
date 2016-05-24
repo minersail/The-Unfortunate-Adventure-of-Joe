@@ -1,15 +1,10 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Game.h"
-//#include "Block.h"
-//#include "NPC.h"
 
 Player::Player(float initX, float initY, std::string textureID, std::string name)
-	: Entity(initX, initY, textureID, name, sf::IntRect(0, JOE_HEIGHT / 3, JOE_WIDTH, JOE_HEIGHT / 2))
+	: Character(initX, initY, textureID, name, JOE_WIDTH, JOE_HEIGHT, sf::IntRect(0, JOE_HEIGHT / 3, JOE_WIDTH, JOE_HEIGHT / 2))
 {
-	SetTextureRect(0, 0, JOE_HEIGHT, JOE_WIDTH);
-	GetSprite().setOrigin(JOE_WIDTH / 2, JOE_HEIGHT / 2);
-
 	keyPressed = None;
 	frameCount = 0;
 }
@@ -85,56 +80,6 @@ void Player::Update(float deltaTime, sf::Event ev)
 
 	Game::SetView(std::max(float(Game::SCREEN_WIDTH / 2), std::min(float(Game::SCREEN_WIDTH * Game::XCHUNKS - Game::SCREEN_WIDTH / 2), GetPosition().x)), 
 				  std::max(float(Game::SCREEN_HEIGHT / 2), std::min(float(Game::SCREEN_HEIGHT * Game::YCHUNKS - Game::SCREEN_HEIGHT / 2), GetPosition().y)));
-}
-
-void Player::Walk(Player::Direction _direction)
-{
-	frameCount += 1;
-	switch (_direction)
-	{
-		case Up:
-		{
-			SetTextureRect(0, GetSprite().getTextureRect().top, JOE_WIDTH, JOE_HEIGHT);
-			SetPosition(GetPosition().x, GetPosition().y - 2);
-			break;
-		}
-		case Down:
-		{
-			SetTextureRect(34, GetSprite().getTextureRect().top, JOE_WIDTH, JOE_HEIGHT);
-			SetPosition(GetPosition().x, GetPosition().y + 2);
-			break;
-		}
-		case Left:
-		{
-			SetTextureRect(51, GetSprite().getTextureRect().top, JOE_WIDTH, JOE_HEIGHT);
-			SetPosition(GetPosition().x - 2, GetPosition().y);
-			break;
-		}
-		case Right:
-		{
-			SetTextureRect(17, GetSprite().getTextureRect().top, JOE_WIDTH, JOE_HEIGHT);
-			SetPosition(GetPosition().x + 2, GetPosition().y);
-			break;
-		}
-		case None:
-		{
-			SetTextureRect(GetSprite().getTextureRect().left, 0, JOE_WIDTH, JOE_HEIGHT);
-			return;
-			break;
-		}
-	}
-
-	if (frameCount % 10 == 0)
-	{
-		if (GetSprite().getTextureRect().top != 78)
-		{
-			SetTextureRect(GetSprite().getTextureRect().left, GetSprite().getTextureRect().top + JOE_HEIGHT, JOE_WIDTH, JOE_HEIGHT);
-		}
-		else
-		{
-			SetTextureRect(GetSprite().getTextureRect().left, 0, JOE_WIDTH, JOE_HEIGHT);
-		}
-	}
 }
 
 void Player::UpdateChunk() // CHANGE WHEN THERE ARE MORE THAN 9 CHUNKS

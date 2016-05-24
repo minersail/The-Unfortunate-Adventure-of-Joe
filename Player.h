@@ -1,15 +1,15 @@
 #pragma once
 #include "stdafx.h"
-#include "Entity.h"
+#include "Character.h"
 
-class Player : public Entity {
+class Player : public Character
+{
 public:
 	Player(float initX, float initY, std::string textureID, std::string name);
 	~Player();
 
 	void Update(float deltaTime, sf::Event ev);
 	void Draw(sf::RenderWindow& rw);
-	void Walk(Direction _direction);
 
 	void UpdateChunk();
 
