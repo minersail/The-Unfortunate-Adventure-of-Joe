@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Barrier.h"
 #include "Decoration.h"
+#include "NPC.h"
 
 void Game::Start()
 {
@@ -17,55 +18,72 @@ void Game::Start()
 	_view.setSize(sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 	_mainWindow.setView(_view);
 
-	// Pointer name means absolutely nothing
-	Map* board = new Map(0, 0, "Tiles", "Map", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
-	Map* board2 = new Map(50, 0, "Tiles", "Map 2", sf::Vector2i(16, 16), "maps/square.txt", 50, 50);
-	Map* board3 = new Map(100, 0, "Tiles", "Map 3", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
-	Map* board4 = new Map(0, 50, "Tiles", "Map 4", sf::Vector2i(16, 16), "maps/square.txt", 50, 50);
-	Map* board5 = new Map(50, 50, "Tiles", "Map 5", sf::Vector2i(16, 16), "maps/4.txt", 50, 50);
-	Map* board6 = new Map(100, 50, "Tiles", "Map 6", sf::Vector2i(16, 16), "maps/square.txt", 50, 50);
-	Map* board7 = new Map(0, 100, "Tiles", "Map 7", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
-	Map* board8 = new Map(50, 100, "Tiles", "Map 8", sf::Vector2i(16, 16), "maps/7.txt", 50, 50);
-	Map* board9 = new Map(100, 100, "Tiles", "Map 9", sf::Vector2i(16, 16), "maps/square.txt", 50, 50);
+	// Pointer name means absolutely nothing////////////////////////////////////////////////////////
+	Map* board0 = new Map(0, 0, "Tiles", "Map", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	Map* board1 = new Map(50, 0, "Tiles", "Map 2", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	Map* board2 = new Map(100, 0, "Tiles", "Map 3", sf::Vector2i(16, 16), "maps/7.txt", 50, 50);
+	Map* board3 = new Map(0, 50, "Tiles", "Map 4", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	Map* board4 = new Map(50, 50, "Tiles", "Map 5", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	Map* board5 = new Map(100, 50, "Tiles", "Map 6", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	Map* board6 = new Map(0, 100, "Tiles", "Map 7", sf::Vector2i(16, 16), "maps/6.txt", 50, 50);
+	Map* board7 = new Map(50, 100, "Tiles", "Map 8", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	Map* board8 = new Map(100, 100, "Tiles", "Map 9", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
 
+	//////////////////////////////////GAME BORDERS///////////////////////////////////////////
 	Barrier* NorthBorder = new Barrier(0, 0, "Fence", "North Border", sf::Vector2i(149, 1));
-	Barrier* SouthBorder = new Barrier(0, 148, "Fence", "South Border", sf::Vector2i(149, 1));
-	Barrier* EastBorder = new Barrier(148, 0, "Fence", "East Border", sf::Vector2i(1, 149));
+	Barrier* SouthBorder = new Barrier(0, 149, "Fence", "South Border", sf::Vector2i(149, 1));
+	Barrier* EastBorder = new Barrier(149, 0, "Fence", "East Border", sf::Vector2i(1, 149));
 	Barrier* WestBorder = new Barrier(0, 0, "Fence", "West Border", sf::Vector2i(1, 149));
+	/////////////////////////////////////////////////////////////////////////////////////////
 
-	Barrier* animLake = new Barrier(87, 87, "Water", "lake 1", sf::Vector2i(5, 5), 3);
-	Barrier* hut1 = new Barrier(80, 86, "Brown House", "hut 1");
-	Barrier* fencen1 = new Barrier(50, 51, "Fence", "Home North Fence 1", sf::Vector2i(23, 1));
-	Barrier* fencen2 = new Barrier(77, 51, "Fence", "Home North Fence 2", sf::Vector2i(23, 1));
-	Barrier* fence2 = new Barrier(50, 99, "Fence", "Home South Fence 1", sf::Vector2i(23, 1));
-	Barrier* fence3 = new Barrier(77, 99, "Fence", "Home South Fence 2", sf::Vector2i(23, 1));
-	Barrier* fence4 = new Barrier(50, 51, "Fence", "Home West Fence", sf::Vector2i(1, 48));
-	Barrier* fence5 = new Barrier(100, 51, "Fence", "Home East Fence", sf::Vector2i(1, 49));
-	Decoration* grass1 = new Decoration(88, 87, "Grass Side", "grass 1", sf::Vector2i(3, 1));
-	Decoration* grass2 = new Decoration(88, 91, "Grass Side", "grass 2", sf::Vector2i(3, 1), 180);
-	Decoration* grass3 = new Decoration(87, 88, "Grass Side", "grass 3", sf::Vector2i(1, 3), 270);
-	Decoration* grass4 = new Decoration(91, 88, "Grass Side", "grass 4", sf::Vector2i(1, 3), 90);
-	Decoration* grass5 = new Decoration(87, 87, "Grass Corner 2", "grass 5");
-	Decoration* grass6 = new Decoration(87, 92, "Grass Corner 2", "grass 6", 270);
-	Decoration* grass7 = new Decoration(92, 92, "Grass Corner 2", "grass 7", 180);
-	Decoration* grass8 = new Decoration(92, 87, "Grass Corner 2", "grass 8", 90);
+	// Tile 6
+	Barrier* animLake = new Barrier(37, 137, "Water", "lake 1", sf::Vector2i(5, 5), 3);
+	Barrier* hut1 = new Barrier(30, 136, "Blue House", "hut 1", 1, sf::IntRect(0, 32, 80, 64));
+	Barrier* fence5 = new Barrier(50, 100, "Fence", "Orchard Lake East Fence", sf::Vector2i(1, 50));
+	Decoration* grass1 = new Decoration(38, 137, "Grass Side", "grass 1", sf::Vector2i(3, 1));
+	Decoration* grass2 = new Decoration(38, 141, "Grass Side", "grass 2", sf::Vector2i(3, 1), 180);
+	Decoration* grass3 = new Decoration(37, 138, "Grass Side", "grass 3", sf::Vector2i(1, 3), 270);
+	Decoration* grass4 = new Decoration(41, 138, "Grass Side", "grass 4", sf::Vector2i(1, 3), 90);
+	Decoration* grass5 = new Decoration(37, 137, "Grass Corner 2", "grass 5");
+	Decoration* grass6 = new Decoration(37, 142, "Grass Corner 2", "grass 6", 270);
+	Decoration* grass7 = new Decoration(42, 142, "Grass Corner 2", "grass 7", 180);
+	Decoration* grass8 = new Decoration(42, 137, "Grass Corner 2", "grass 8", 90);
+	NPC* bob = new NPC(32, 120, "NPC 1", "Bob");
 	
-	Barrier* fence6 = new Barrier(50, 100, "Fence", "West Fence 1", sf::Vector2i(1, 48));
-	Barrier* fence7 = new Barrier(100, 100, "Fence", "East Fence 1", sf::Vector2i(1, 48));
+	// Tile 3
 	for (int j = 0; j < 4; j++)
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			Barrier* hut = new Barrier(56 + i * 6, 109 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4));
+			Barrier* hut = new Barrier(6 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4), 1, sf::IntRect(0, 32, 80, 64));
 		}
 		for (int i = 0; i < 3; i++)
 		{
-			Barrier* hut = new Barrier(77 + i * 6, 109 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4 + 4));
+			Barrier* hut = new Barrier(27 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4 + 4), 1, sf::IntRect(0, 32, 80, 64));
 		}
 	}
 
-	Player* joe = new Player(84, 92, "Joe", "Joe");
+	// ------------------------------------------Things drawn under Joe go above here------------------------------------------------
+	Player* joe = new Player(34, 142, "Joe", "Joe");
+	// ------------------------------------------Things drawn over Joe go below here-------------------------------------------------
 
+	// Tile 6
+	Decoration* hut1top = new Decoration(30, 136, "Blue House Roof", "hut 1 roof");
+	
+	// Tile 3
+	for (int j = 0; j < 4; j++)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			Decoration* hut = new Decoration(6 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4) + "roof");
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			Decoration* hut = new Decoration(27 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4 + 4) + "roof");
+		}
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////
 	LoadFonts();
 
 	_gameState = Playing;

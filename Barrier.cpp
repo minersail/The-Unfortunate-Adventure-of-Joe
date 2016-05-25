@@ -3,16 +3,20 @@
 #include "Barrier.h"
 #include "Game.h"
 
-Barrier::Barrier(float initX, float initY, std::string textureID, std::string name, int animationFrames)
-	: Entity(initX, initY, textureID, name, sf::IntRect(0, 0, Game::GetResourceManager().Get(textureID).getSize().x / animationFrames, Game::GetResourceManager().Get(textureID).getSize().y)),
+Barrier::Barrier(float initX, float initY, std::string textureID, std::string name, int animationFrames, sf::IntRect customHitBox)
+	: Entity(initX, initY, textureID, name, // Ternary operator to check if customHitBox is default to determine whether or not a
+	// custom hitbox was supplied. Simply using the Texture Rect will not work since this is called before VisibleGameObject() allocates
+	// the texture, and using the Get() function of the ResourceManager will not work as a default constructor as textureID is there undefined
+	(customHitBox == sf::IntRect(0, 0, 0, 0) ? sf::IntRect(0, 0, Game::GetResourceManager().Get(textureID).getSize().x / animationFrames, 
+	Game::GetResourceManager().Get(textureID).getSize().y) : customHitBox)),
 	tiled(false), maxFrame(animationFrames), currentFrame(1), tiledSize(sf::Vector2f(0, 0))
 {
 	immovable = true;
 	Animate();
 }
 
-Barrier::Barrier(float initX, float initY, std::string textureID, std::string name, sf::Vector2i size, int animationFrames)
-	: Entity(initX, initY, textureID, name, sf::IntRect(0, 0, size.x * 16, size.y * 16)),
+Barrier::Barrier(float initX, float initY, std::string textureID, std::string name, sf::Vector2i size, int animationFrames, sf::IntRect customHitBox)
+	: Entity(initX, initY, textureID, name, (customHitBox == sf::IntRect(0, 0, 0, 0) ? sf::IntRect(0, 0, size.x * 16, size.y * 16) : customHitBox)),
 	tiled(true), maxFrame(animationFrames), currentFrame(1), tiledSize(size)
 {
 	// Resize VerticeList to size of Barrier
@@ -92,4 +96,13 @@ void Barrier::Draw(sf::RenderWindow& rw)
 	{
 		rw.draw(GetSprite());
 	}
+
+	/*sf::RectangleShape hitbox;
+	hitbox.setSize(sf::Vector2f(GetHitBox().width, GetHitBox().height));
+	hitbox.setOutlineColor(sf::Color::Red);
+	hitbox.setFillColor(sf::Color(255, 255, 255, 0));
+	hitbox.setOutlineThickness(2);
+	hitbox.setOrigin(GetHitBox().width / 2, GetHitBox().height / 2);
+	hitbox.setPosition(GetPosition().x + GetHitBox().left, GetPosition().y + GetHitBox().top);
+	rw.draw(hitbox);*/
 };

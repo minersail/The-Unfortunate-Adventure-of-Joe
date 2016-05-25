@@ -1,17 +1,15 @@
 #pragma once
 #include "stdafx.h"
-#include "Entity.h"
+#include "Character.h"
 
-class NPC : public Entity
+class NPC : public Character
 {
 public:
-	NPC(float initX, float initY, std::string textureID, std::string name);
+	NPC(float initX, float initY, std::string textureID, std::string name, sf::IntRect customHitBox = sf::IntRect(0, 0, 0, 0));
 	~NPC();
 	
 	void Update(float deltaTime, sf::Event ev);
 	void Draw(sf::RenderWindow& rw);
-
-	sf::Vector2f getLastPosition();
 	
 	sf::Vector2f lastPosition;
 	Direction npcDirection;
@@ -19,7 +17,4 @@ public:
 private:	
 	sf::Text message;
 	std::vector<std::string> messageList;
-
-	static const int NPC_WIDTH = 17;
-	static const int NPC_HEIGHT = 26;
 };

@@ -12,9 +12,9 @@ Barrier allows for four combinations of blocking objects:
 class Barrier : public Entity
 {
 public:
-	Barrier(float initX, float initY, std::string textureID, std::string name, int animationFrames = 1);
+	Barrier(float initX, float initY, std::string textureID, std::string name, int animationFrames = 1, sf::IntRect customHitBox = sf::IntRect(0, 0, 0, 0));
 	// If tiled texture is used, size determines 16x16 tiles in both directions
-	Barrier(float initX, float initY, std::string textureID, std::string name, sf::Vector2i size, int animationFrames = 1);
+	Barrier(float initX, float initY, std::string textureID, std::string name, sf::Vector2i size, int animationFrames = 1, sf::IntRect customHitBox = sf::IntRect(0, 0, 0, 0));
 	~Barrier();
 
 	virtual void Update(float deltaTime, sf::Event ev);

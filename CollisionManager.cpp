@@ -56,6 +56,11 @@ void CollisionManager::CheckChunkCollisions(int chunk)
 
 void CollisionManager::Add(int chunk, Entity* ent)
 {
+	if (chunk > 8 || chunk < 0)
+	{
+		std::cout << ent->name << std::endl;
+		assert(false);
+	}
 	EntityList[chunk].push_back(ent);
 }
 

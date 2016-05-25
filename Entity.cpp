@@ -8,12 +8,12 @@ Entity::Entity(float initX, float initY, std::string textureID, std::string name
 	immovable(false)
 {
 	SetHitBox(GetTextureRect());
+	InitializeChunks();
+
 	// Collision calculations require the origin to be at center
 	GetSprite().setOrigin(GetHitBox().width / 2, GetHitBox().height / 2);
 	// Account for change in position by setting origin
 	SetPosition(GetPosition().x + GetHitBox().width / 2, GetPosition().y + GetHitBox().height / 2);
-
-	InitializeChunks();
 }
 
 Entity::Entity(float initX, float initY, std::string textureID, std::string name, sf::IntRect customHB)
@@ -22,12 +22,12 @@ Entity::Entity(float initX, float initY, std::string textureID, std::string name
 	immovable(false)
 {
 	SetHitBox(customHB);
+	InitializeChunks();
+
 	// Collision calculations require the origin to be at center
 	GetSprite().setOrigin(GetHitBox().width / 2, GetHitBox().height / 2);
 	// Account for change in position by setting origin
 	SetPosition(GetPosition().x + GetHitBox().width / 2, GetPosition().y + GetHitBox().height / 2);
-
-	InitializeChunks();
 }
 
 Entity::~Entity()
@@ -47,8 +47,8 @@ std::vector<sf::Vector2f> Entity::GetVertices()
 	float angleoffset = atan2f(GetHitBox().height, GetHitBox().width); // Angle theta between horizontal and diagonal
 	float PI = 3.1415926535f; // Apple, of course
 
-	float x = GetPosition().x + GetHitBox().left / 2; // Hitbox's origin
-	float y = GetPosition().y + GetHitBox().top / 2;
+	float x = GetPosition().x + GetHitBox().left; // Hitbox's origin
+	float y = GetPosition().y + GetHitBox().top;
 
 	sf::Vector2f vert1(x + offset * cos(angle + angleoffset), y + offset * sin(angle + angleoffset)); // Quadrant 4
 	sf::Vector2f vert2(x + offset * cos(angle + PI - angleoffset), y + offset * sin(angle + PI - angleoffset)); // Quadrant 3
@@ -238,8 +238,9 @@ sf::Rect<int> Entity::GetHitBox()
 
 void Entity::InitializeChunks()
 {
-	int topLeftChunk = std::floor((GetPosition().x - GetHitBox().width / 2) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y - GetHitBox().height / 2) / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
-	int botRightChunk = std::floor((GetPosition().x + GetHitBox().width / 2) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y + GetHitBox().height / 2) / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
+	int topLeftChunk = std::floor(GetPosition().x / Game::SCREEN_WIDTH) + std::floor((GetPosition().y / Game::SCREEN_HEIGHT)) * Game::XCHUNKS;
+	int botRightChunk = std::floor((GetPosition().x + GetHitBox().width - 16) / Game::SCREEN_WIDTH) + 
+						std::floor((GetPosition().y + GetHitBox().height - 16) / Game::SCREEN_HEIGHT) * Game::XCHUNKS;
 
 	if (topLeftChunk == botRightChunk)
 	{
@@ -247,8 +248,8 @@ void Entity::InitializeChunks()
 	}
 	else // The entity occupies more than one chunk
 	{
-		int topRightChunk = std::floor((GetPosition().x + GetHitBox().width / 2) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y - GetHitBox().height / 2) / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
-		int botLeftChunk = std::floor((GetPosition().x - GetHitBox().width / 2) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y + GetHitBox().height / 2) / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
+		int topRightChunk = std::floor((GetPosition().x + GetHitBox().width - 16) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y) / Game::SCREEN_HEIGHT) * Game::XCHUNKS;
+		int botLeftChunk = std::floor(GetPosition().x / Game::SCREEN_WIDTH) + std::floor((GetPosition().y + GetHitBox().height - 16) / Game::SCREEN_HEIGHT) * Game::XCHUNKS;
 
 		int chunksX = topRightChunk - topLeftChunk + 1; // How many chunks in the x direction the entity occupies
 		int chunksY = (botLeftChunk - topLeftChunk) / Game::XCHUNKS + 1; // How many chunks in the y direction the entity occupies

@@ -13,6 +13,7 @@ ResourceManager::ResourceManager()
 	Load("images/grassside.png", "Grass Side");
 	Load("images/grasscorner2.png", "Grass Corner 2");
 	Load("images/fence.png", "Fence");
+	Load("images/npc1.png", "NPC 1");
 }
 
 ResourceManager::~ResourceManager()

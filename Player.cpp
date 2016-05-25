@@ -3,7 +3,7 @@
 #include "Game.h"
 
 Player::Player(float initX, float initY, std::string textureID, std::string name)
-	: Character(initX, initY, textureID, name, JOE_WIDTH, JOE_HEIGHT, sf::IntRect(0, JOE_HEIGHT / 3, JOE_WIDTH, JOE_HEIGHT / 2))
+	: Character(initX, initY, textureID, name)
 {
 	keyPressed = None;
 	frameCount = 0;
@@ -78,48 +78,21 @@ void Player::Update(float deltaTime, sf::Event ev)
 		collided = false;
 	}
 
+	// Set the game's view to be on Joe, but not move off screen
 	Game::SetView(std::max(float(Game::SCREEN_WIDTH / 2), std::min(float(Game::SCREEN_WIDTH * Game::XCHUNKS - Game::SCREEN_WIDTH / 2), GetPosition().x)), 
 				  std::max(float(Game::SCREEN_HEIGHT / 2), std::min(float(Game::SCREEN_HEIGHT * Game::YCHUNKS - Game::SCREEN_HEIGHT / 2), GetPosition().y)));
-}
-
-void Player::UpdateChunk() // CHANGE WHEN THERE ARE MORE THAN 9 CHUNKS
-{
-	// Offset to top-left corner of player's hitbox
-	int newChunk = std::floor((GetPosition().x + GetHitBox().width / 2) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y + GetHitBox().height / 2) / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
-	if (newChunk != ChunkID) // There has been a change in chunk
-	{
-		if (newChunk < ChunkID - 1) // Up
-		{
-			std::cout << "Up" << std::endl;
-		}
-		else if (newChunk < ChunkID) // Left
-		{
-			std::cout << "Left" << std::endl;
-		}
-		else if(newChunk > ChunkID + 1) // Down
-		{
-			std::cout << "Down" << std::endl;
-		}
-		else if (newChunk > ChunkID) // Right
-		{
-			std::cout << "Right" << std::endl;
-		}
-		Game::GetCollisionManager().Remove(ChunkID, this);
-		ChunkID = newChunk;
-		Game::GetCollisionManager().Add(ChunkID, this);
-	}
 }
 
 void Player::Draw(sf::RenderWindow& rw)
 {
 	rw.draw(GetSprite());
+
 	/*sf::RectangleShape hitbox;
 	hitbox.setSize(sf::Vector2f(GetHitBox().width, GetHitBox().height));
 	hitbox.setOutlineColor(sf::Color::Red);
 	hitbox.setFillColor(sf::Color(255, 255, 255, 0));
 	hitbox.setOutlineThickness(2);
 	hitbox.setOrigin(GetHitBox().width / 2, GetHitBox().height / 2);
-	hitbox.setPosition(GetPosition().x, GetPosition().y);
-	hitbox.setPosition(GetPosition().x + GetHitBox().left / 2, GetPosition().y + GetHitBox().top / 2);
+	hitbox.setPosition(GetPosition().x + GetHitBox().left, GetPosition().y + GetHitBox().top);
 	rw.draw(hitbox);*/
 }

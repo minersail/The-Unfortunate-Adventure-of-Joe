@@ -11,8 +11,6 @@ public:
 	void Update(float deltaTime, sf::Event ev);
 	void Draw(sf::RenderWindow& rw);
 
-	void UpdateChunk();
-
 	Direction keyPressed;
 
 private:
