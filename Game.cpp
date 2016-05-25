@@ -38,7 +38,7 @@ void Game::Start()
 
 	// Tile 6
 	Barrier* animLake = new Barrier(37, 137, "Water", "lake 1", sf::Vector2i(5, 5), 3);
-	Barrier* hut1 = new Barrier(30, 136, "Blue House", "hut 1", 1, sf::IntRect(0, 32, 80, 64));
+	Barrier* hut1 = new Barrier(30, 136, "Blue House", "hut 1", 1, sf::IntRect(0, 26, 80, 70));
 	Barrier* fence5 = new Barrier(50, 100, "Fence", "Orchard Lake East Fence", sf::Vector2i(1, 50));
 	Decoration* grass1 = new Decoration(38, 137, "Grass Side", "grass 1", sf::Vector2i(3, 1));
 	Decoration* grass2 = new Decoration(38, 141, "Grass Side", "grass 2", sf::Vector2i(3, 1), 180);
@@ -48,22 +48,34 @@ void Game::Start()
 	Decoration* grass6 = new Decoration(37, 142, "Grass Corner 2", "grass 6", 270);
 	Decoration* grass7 = new Decoration(42, 142, "Grass Corner 2", "grass 7", 180);
 	Decoration* grass8 = new Decoration(42, 137, "Grass Corner 2", "grass 8", 90);
-	NPC* bob = new NPC(32, 120, "NPC 1", "Bob");
 	
 	// Tile 3
 	for (int j = 0; j < 4; j++)
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			Barrier* hut = new Barrier(6 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4), 1, sf::IntRect(0, 32, 80, 64));
+			Barrier* hut = new Barrier(6 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4), 1, sf::IntRect(0, 26, 80, 70));
 		}
 		for (int i = 0; i < 3; i++)
 		{
-			Barrier* hut = new Barrier(27 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4 + 4), 1, sf::IntRect(0, 32, 80, 64));
+			Barrier* hut = new Barrier(27 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4 + 4), 1, sf::IntRect(0, 26, 80, 70));
 		}
 	}
 
 	// ------------------------------------------Things drawn under Joe go above here------------------------------------------------
+	NPC* bob = new NPC(32, 120, "NPC 1", "Bob");
+	NPC* bob1 = new NPC(32, 120, "NPC 1", "Bobb");
+	NPC* bob2 = new NPC(32, 120, "NPC 1", "Bobbb");
+	NPC* bob3 = new NPC(32, 120, "NPC 1", "Bbob");
+	NPC* bob4 = new NPC(32, 120, "NPC 1", "Booob");
+	NPC* bob5 = new NPC(32, 120, "NPC 1", "Boooob");
+	NPC* bob6 = new NPC(32, 120, "NPC 1", "Bboob");
+	NPC* bob7 = new NPC(32, 120, "NPC 1", "Baob");
+	NPC* bob8 = new NPC(32, 120, "NPC 1", "Bofb");
+	NPC* bob9 = new NPC(32, 120, "NPC 1", "Bsob");
+	NPC* bob10 = new NPC(32, 120, "NPC 1", "Bodb");
+	NPC* bob11 = new NPC(32, 120, "NPC 1", "aBob");	
+	
 	Player* joe = new Player(34, 142, "Joe", "Joe");
 	// ------------------------------------------Things drawn over Joe go below here-------------------------------------------------
 
@@ -75,11 +87,11 @@ void Game::Start()
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			Decoration* hut = new Decoration(6 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4) + "roof");
+			Decoration* hut = new Decoration(6 + i * 6, 59 + j * 10, "Blue House Roof", "hut " + std::to_string(i + j * 4) + "roof");
 		}
 		for (int i = 0; i < 3; i++)
 		{
-			Decoration* hut = new Decoration(27 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4 + 4) + "roof");
+			Decoration* hut = new Decoration(27 + i * 6, 59 + j * 10, "Blue House Roof", "hut " + std::to_string(i + j * 4 + 4) + "roof");
 		}
 	}
 
@@ -168,6 +180,11 @@ ResourceManager& Game::GetResourceManager()
 CollisionManager& Game::GetCollisionManager()
 {
 	return _collisionManager;
+}
+
+Player* Game::GetJoe()
+{
+	return dynamic_cast<Player*>(_gameObjectManager.Get("Joe"));
 }
 
 void Game::SetView(float newX, float newY)

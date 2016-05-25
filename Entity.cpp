@@ -177,27 +177,6 @@ bool Entity::CheckForCollision(Entity* other)
 	{
 		TestMTV.first = sf::Vector2f(-TestMTV.first.x, -TestMTV.first.y);
 	}
-
-	/*if (collided) // If there already has been a collision this tick
-	{
-		float magnitude;
-		sf::Vector2f v1, v2, result;
-		v1.x = MTV.first.x * MTV.second;
-		v1.y = MTV.first.y * MTV.second;
-		v2.x = TestMTV.first.x * TestMTV.second;
-		v2.y = TestMTV.first.y * TestMTV.second;
-
-		result = sf::Vector2f(v1.x + v2.x, v1.y + v2.y); // Add the MTV vectors together
-		magnitude = sqrt(pow(result.x, 2) + pow(result.y, 2));
-
-		if (magnitude != 0) // If the new MVT is non-negligible
-		{ // Also no divide by zero
-			MTV.first = sf::Vector2f(result.x / magnitude, result.y / magnitude); // Turn MTV back into a unit vector
-			MTV.second = magnitude;
-		}
-	}
-	else // Otherwise just store the TestMTV into MTV
-	{*/
 		
 	MTV = TestMTV;
 
@@ -212,7 +191,7 @@ bool Entity::CheckForCollision(Entity* other)
 	else if (!immovable && !other->immovable)
 	{
 		SetPosition(GetPosition().x - MTV.first.x * MTV.second / 2, GetPosition().y - MTV.first.y * MTV.second / 2);
-		other->SetPosition(other->GetPosition().x - MTV.first.x * MTV.second / 2, other->GetPosition().y - MTV.first.y * MTV.second / 2);
+		other->SetPosition(other->GetPosition().x + MTV.first.x * MTV.second / 2, other->GetPosition().y + MTV.first.y * MTV.second / 2);
 	}
 
 	other->MTV.first = MTV.first;

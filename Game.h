@@ -11,6 +11,7 @@ public:
 	static GameObjectManager& GetObjectManager(); // Returns _gameObjectManager
 	static ResourceManager& GetResourceManager(); // Returns _resourceManager
 	static CollisionManager& GetCollisionManager(); // Returns _collisionManager
+	static Player* GetJoe(); // Returns Joe
 	// Enter an object into the gameobjectmanager and set its position
 	static void Initialize(std::string name, VisibleGameObject* obj, float x, float y);
 	static void SetView(float newX, float newY);

@@ -6,6 +6,7 @@ NPC::NPC(float initX, float initY, std::string textureID, std::string name, sf::
 	: Character(initX, initY, textureID, name)
 {
 	frameCount = rand() % 120;
+	messageList.push_back(""); // Blank state of pausing between talking
 	messageList.push_back("Wow, it's slightly unconfortable \nout, Joe must be nearby");
 	messageList.push_back("Don't you think that\nLIBERALS are awesome?");
 	messageList.push_back("You know, I heard Joe reproduces \nby budding.");
