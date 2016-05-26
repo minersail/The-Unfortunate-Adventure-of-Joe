@@ -2,6 +2,9 @@
 #include "stdafx.h"
 #include "Character.h"
 
+/*
+Non-interactable NPC that randomly walks around and shouts
+*/
 class NPC : public Character
 {
 public:

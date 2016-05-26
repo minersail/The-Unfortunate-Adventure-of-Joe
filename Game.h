@@ -3,6 +3,8 @@
 #include "GameObjectManager.h"
 #include "ResourceManager.h"
 #include "CollisionManager.h"
+#include "DialogueManager.h"
+#include "Player.h"
 
 class Game {
 public:
@@ -11,7 +13,13 @@ public:
 	static GameObjectManager& GetObjectManager(); // Returns _gameObjectManager
 	static ResourceManager& GetResourceManager(); // Returns _resourceManager
 	static CollisionManager& GetCollisionManager(); // Returns _collisionManager
+	static DialogueManager& GetDialogueManager(); // Returns _dialogueManager
+
+	static sf::Font& GetFont(std::string fontID);
 	static Player* GetJoe(); // Returns Joe
+	// Short for GetTextureSize(); Intentionally short name for use in constructors before the texture is loaded
+	static sf::Vector2i GTS(std::string textureID);
+
 	// Enter an object into the gameobjectmanager and set its position
 	static void Initialize(std::string name, VisibleGameObject* obj, float x, float y);
 	static void SetView(float newX, float newY);
@@ -20,8 +28,6 @@ public:
 	const static int SCREEN_WIDTH = 800;
 	const static int YCHUNKS = 3;
 	const static int XCHUNKS = 3;
-
-	static sf::Font regular;
 
 	enum GameState {
 		Uninitialized, Paused, Talking,
@@ -35,9 +41,12 @@ private:
 	static void GameLoop(); // Main game function
 	static void LoadFonts(); // Load font(s)
 
+	static sf::Font regular;
+
 	static sf::RenderWindow _mainWindow; // main window. duh
 	static sf::View _view;
 	static GameObjectManager _gameObjectManager; // GameObjectManager
 	static ResourceManager _resourceManager; // ResourceManager
 	static CollisionManager _collisionManager; // CollisionManager
+	static DialogueManager _dialogueManager; // DialogueManager
 };

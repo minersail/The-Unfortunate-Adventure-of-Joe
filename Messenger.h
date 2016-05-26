@@ -1,16 +1,20 @@
 #pragma once
 #include "stdafx.h"
-#include "Entity.h"
+#include "UseObject.h"
 
-class Messenger : public Entity
+/*
+Object that initiates dialogue when the player activates it, such as an NPC or a sign
+Not to be confused with the NPC class, which only walks around and has text pop above its head
+*/
+class Messenger : public UseObject
 {
 public:
-	Messenger(float initX, float initY, std::string textureID, std::string name, sf::Vector2i pos1 = sf::Vector2i(-1, -1),
-		sf::Vector2i pos2 = sf::Vector2i(-1, -1), sf::Vector2i pos3 = sf::Vector2i(-1, -1), sf::Vector2i pos4 = sf::Vector2i(-1, -1));
+	Messenger(float initX, float initY, std::string textureID, std::string name, int talkID);
 	~Messenger();
 
 	void Update(float deltaTime, sf::Event ev);
 
-private:
-	std::vector<sf::Vector2i> activationLocs;
+	// Number corresponding to the dialogue stored in the DialogueManager
+	// 1-indexed
+	int dialogueID;
 };

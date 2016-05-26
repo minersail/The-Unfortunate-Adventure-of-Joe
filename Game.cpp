@@ -5,6 +5,7 @@
 #include "Barrier.h"
 #include "Decoration.h"
 #include "NPC.h"
+#include "Messenger.h"
 
 void Game::Start()
 {
@@ -77,6 +78,8 @@ void Game::Start()
 	NPC* bob11 = new NPC(32, 120, "NPC 1", "aBob");	
 	
 	Player* joe = new Player(34, 142, "Joe", "Joe");
+
+	Messenger* larry = new Messenger(24, 137, "NPC 2", "Steve", 1);
 	// ------------------------------------------Things drawn over Joe go below here-------------------------------------------------
 
 	// Tile 6
@@ -135,6 +138,13 @@ void Game::GameLoop()
 		_mainWindow.display();
 		break;
 	}
+	case Talking:
+	{
+		_gameObjectManager.DrawAll(_mainWindow);
+		_dialogueManager.Manage(currentEvent, _mainWindow);
+		_mainWindow.display();
+		break;
+	}
 	case Paused:
 	{
 		_gameState = Playing;
@@ -162,6 +172,14 @@ void Game::LoadFonts()
 	regular.loadFromFile("fonts/regular.ttf");
 }
 
+sf::Font& Game::GetFont(std::string fontID)
+{
+	if (fontID == "Regular")
+	{
+		return regular;
+	}
+}
+
 sf::RenderWindow& Game::GetWindow()
 {
 	return _mainWindow;
@@ -182,9 +200,19 @@ CollisionManager& Game::GetCollisionManager()
 	return _collisionManager;
 }
 
+DialogueManager& Game::GetDialogueManager()
+{
+	return _dialogueManager;
+}
+
 Player* Game::GetJoe()
 {
 	return dynamic_cast<Player*>(_gameObjectManager.Get("Joe"));
+}
+
+sf::Vector2i Game::GTS(std::string textureID)
+{
+	return sf::Vector2i(_resourceManager.Get(textureID).getSize());
 }
 
 void Game::SetView(float newX, float newY)
@@ -204,5 +232,6 @@ sf::RenderWindow Game::_mainWindow;
 GameObjectManager Game::_gameObjectManager;
 ResourceManager Game::_resourceManager;
 CollisionManager Game::_collisionManager;
+DialogueManager Game::_dialogueManager;
 sf::Font Game::regular;
 sf::View Game::_view;

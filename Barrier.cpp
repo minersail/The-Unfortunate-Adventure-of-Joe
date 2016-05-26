@@ -6,9 +6,8 @@
 Barrier::Barrier(float initX, float initY, std::string textureID, std::string name, int animationFrames, sf::IntRect customHitBox)
 	: Entity(initX, initY, textureID, name, // Ternary operator to check if customHitBox is default to determine whether or not a
 	// custom hitbox was supplied. Simply using the Texture Rect will not work since this is called before VisibleGameObject() allocates
-	// the texture, and using the Get() function of the ResourceManager will not work as a default constructor as textureID is there undefined
-	(customHitBox == sf::IntRect(0, 0, 0, 0) ? sf::IntRect(0, 0, Game::GetResourceManager().Get(textureID).getSize().x / animationFrames, 
-	Game::GetResourceManager().Get(textureID).getSize().y) : customHitBox)),
+	// the texture, and using the Get() function of the ResourceManager will not work as a default constructor as textureID is undefined in the .h
+	(customHitBox == sf::IntRect(0, 0, 0, 0) ? sf::IntRect(0, 0, Game::GTS(textureID).x / animationFrames, Game::GTS(textureID).y) : customHitBox)),
 	tiled(false), maxFrame(animationFrames), currentFrame(1), tiledSize(sf::Vector2f(0, 0))
 {
 	immovable = true;

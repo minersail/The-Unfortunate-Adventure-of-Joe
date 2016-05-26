@@ -5,9 +5,7 @@
 
 Character::Character(float initX, float initY, std::string textureID, std::string name)
 	: Entity(initX, initY, textureID, name, sf::IntRect(0, // See Barrier() to know why this was implemented
-	Game::GetResourceManager().Get(textureID).getSize().y / 16, 
-	Game::GetResourceManager().Get(textureID).getSize().x / 4,
-	Game::GetResourceManager().Get(textureID).getSize().y / 4 / 2)), speed(2)
+	Game::GTS(textureID).y / 16, Game::GTS(textureID).x / 4, Game::GTS(textureID).y / 4 / 2)), speed(2)
 {
 	charW = GetSprite().getTexture()->getSize().x / 4;
 	charH = GetSprite().getTexture()->getSize().y / 4;
@@ -82,9 +80,6 @@ void Character::UpdateChunk() // CHANGE WHEN THERE ARE MORE THAN 9 CHUNKS
 	int newChunk = std::floor((GetPosition().x + GetHitBox().width / 2) / Game::SCREEN_WIDTH) + std::floor((GetPosition().y + GetHitBox().height / 2) / Game::SCREEN_HEIGHT) * Game::YCHUNKS;
 	if (newChunk != ChunkID) // There has been a change in chunk
 	{
-
-		std::cout << newChunk << std::endl;
-
 		if (newChunk < ChunkID - 1) // Up
 		{
 			//std::cout << "Up" << std::endl;

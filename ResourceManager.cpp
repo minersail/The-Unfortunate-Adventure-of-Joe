@@ -14,6 +14,8 @@ ResourceManager::ResourceManager()
 	Load("images/grasscorner2.png", "Grass Corner 2");
 	Load("images/fence.png", "Fence");
 	Load("images/npc1.png", "NPC 1");
+	Load("images/npc2.png", "NPC 2");
+	Load("images/messagebox.png", "Message Box");
 }
 
 ResourceManager::~ResourceManager()

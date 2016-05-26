@@ -25,7 +25,7 @@ NPC::NPC(float initX, float initY, std::string textureID, std::string name, sf::
 	messageList.push_back("I'm so hyped about being hyped!");
 	messageList.push_back("Global warming's not real \nI saw a snowball the other day");
 
-	message.setFont(Game::regular);
+	message.setFont(Game::GetFont("Regular"));
 	message.setCharacterSize(12);
 	message.setColor(sf::Color(0, 0, 0));
 	message.setString(messageList[0]);
@@ -64,7 +64,6 @@ void NPC::Update(float deltaTime, sf::Event ev)
 	if (lastPosition.x == GetPosition().x && lastPosition.y == GetPosition().y && npcDirection != None)
 	{
 		frameCount = 120;
-		std::cout << "DANK MEME" << std::endl;
 	}
 
 	message.setPosition(GetPosition().x, GetPosition().y - GetTextureRect().height);
