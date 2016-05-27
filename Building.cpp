@@ -33,8 +33,6 @@ void Building::Update(float deltaTime, sf::Event ev)
 			floorManager.DrawAll(Game::GetWindow());
 			Game::GetWindow().display();
 
-			//Game::GetWindow().display();
-
 			if (currentEvent.type == sf::Event::Closed)
 			{
 				Game::_gameState = Game::Exiting;
@@ -47,7 +45,7 @@ void Building::Update(float deltaTime, sf::Event ev)
 
 				sf::RectangleShape unit;
 				unit.setSize(sf::Vector2f(16, 16));
-				unit.setPosition(exitPoint.x * 16 - 800, exitPoint.y * 16 - 8); // Adjust the UsePoints by half a unit
+				unit.setPosition(exitPoint.x * 16 - 800, exitPoint.y * 16); // Adjust the UsePoints by half a unit
 
 				unit.setFillColor(sf::Color::Red);
 				Game::GetWindow().draw(unit);

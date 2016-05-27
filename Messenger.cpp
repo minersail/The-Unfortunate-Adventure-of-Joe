@@ -12,8 +12,10 @@ Messenger::Messenger(float initX, float initY, std::string textureID, std::strin
 	sf::Vector2i CoordVec(std::floor((GetPosition().x + GetHitBox().left) / 16),
 						  std::floor((GetPosition().y + GetHitBox().top) / 16));
 
-	activationLocs = { UsePoint(CoordVec.x + 1, CoordVec.y, Left), UsePoint(CoordVec.x - 1, CoordVec.y, Right),
-					   UsePoint(CoordVec.x, CoordVec.y + 1, Up), UsePoint(CoordVec.x, CoordVec.y - 1, Down) };
+	activationLocs.push_back(UsePoint(CoordVec.x + 1, CoordVec.y, Left));
+	activationLocs.push_back(UsePoint(CoordVec.x - 1, CoordVec.y, Right));
+	activationLocs.push_back(UsePoint(CoordVec.x, CoordVec.y + 1, Up));
+	activationLocs.push_back(UsePoint(CoordVec.x, CoordVec.y - 1, Down));
 
 	immovable = true;
 }

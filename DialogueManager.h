@@ -25,8 +25,8 @@ private:
 	int talkIter;
 
 	// Offsets from the center of the MessageBox
-	const int SPRITE_OFFSET_X = 335;
-	const int SPRITE_OFFSET_Y = 30;
-	const int TEXT_OFFSET_X = 320;
-	const int TEXT_OFFSET_Y = 70;
+	static const int SPRITE_OFFSET_X = 335;
+	static const int SPRITE_OFFSET_Y = 30;
+	static const int TEXT_OFFSET_X = 320;
+	static const int TEXT_OFFSET_Y = 70;
 };
