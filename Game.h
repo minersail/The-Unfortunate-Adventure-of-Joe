@@ -10,7 +10,7 @@ class Game {
 public:
 	static void Start();
 	static sf::RenderWindow& GetWindow(); // Returns game window
-	static GameObjectManager& GetObjectManager(); // Returns _gameObjectManager
+	static GameObjectManager& GetObjectManager(); // Returns the current GameObjectMananger
 	static ResourceManager& GetResourceManager(); // Returns _resourceManager
 	static CollisionManager& GetCollisionManager(); // Returns _collisionManager
 	static DialogueManager& GetDialogueManager(); // Returns _dialogueManager
@@ -20,9 +20,9 @@ public:
 	// Short for GetTextureSize(); Intentionally short name for use in constructors before the texture is loaded
 	static sf::Vector2i GTS(std::string textureID);
 
-	// Enter an object into the gameobjectmanager and set its position
-	static void Initialize(std::string name, VisibleGameObject* obj, float x, float y);
 	static void SetView(float newX, float newY);
+	static void LockView(bool lock);
+	static void SwitchObjectManager(bool toMain);
 
 	const static int SCREEN_HEIGHT = 800;
 	const static int SCREEN_WIDTH = 800;
@@ -45,8 +45,12 @@ private:
 
 	static sf::RenderWindow _mainWindow; // main window. duh
 	static sf::View _view;
-	static GameObjectManager _gameObjectManager; // GameObjectManager
+	static GameObjectManager _gameObjectManager; // Main GameObjectManager
+	static GameObjectManager _buildingObjectMananger; // GameObjectManager for the current Building
 	static ResourceManager _resourceManager; // ResourceManager
 	static CollisionManager _collisionManager; // CollisionManager
 	static DialogueManager _dialogueManager; // DialogueManager
+
+	static bool _editingBuilding;
+	static bool _screenLocked;
 };

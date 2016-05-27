@@ -20,4 +20,6 @@ private:
 	std::vector<std::vector<Entity*>> EntityList;
 	// List of chunks currently loaded
 	std::vector<int> ChunkList;
+	// Vector to hold all the entities for the current building
+	std::vector<Entity*> BuildingList;
 };

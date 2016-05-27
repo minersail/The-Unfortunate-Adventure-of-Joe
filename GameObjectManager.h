@@ -12,6 +12,7 @@ public:
 	void AddF(std::string name, VisibleGameObject* gameObject);
 	int GetObjectCount() const;
 	void PrintObjects();
+	void Clear();
 	VisibleGameObject* Get(std::string name) const;
 
 	void DrawAll(sf::RenderWindow& renderWindow);

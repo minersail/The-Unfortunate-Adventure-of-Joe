@@ -6,6 +6,7 @@
 #include "Decoration.h"
 #include "NPC.h"
 #include "Messenger.h"
+#include "Building.h"
 
 void Game::Start()
 {
@@ -18,6 +19,8 @@ void Game::Start()
 	_view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2));
 	_view.setSize(sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
 	_mainWindow.setView(_view);
+
+	_editingBuilding = false;
 
 	// Pointer name means absolutely nothing////////////////////////////////////////////////////////
 	Map* board0 = new Map(0, 0, "Tiles", "Map", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
@@ -39,7 +42,7 @@ void Game::Start()
 
 	// Tile 6
 	Barrier* animLake = new Barrier(37, 137, "Water", "lake 1", sf::Vector2i(5, 5), 3);
-	Barrier* hut1 = new Barrier(30, 136, "Blue House", "hut 1", 1, sf::IntRect(0, 26, 80, 70));
+	//Barrier* hut1 = new Barrier(30, 136, "Blue House", "hut 1", 1, sf::IntRect(0, 26, 80, 70));
 	Barrier* fence5 = new Barrier(50, 100, "Fence", "Orchard Lake East Fence", sf::Vector2i(1, 50));
 	Decoration* grass1 = new Decoration(38, 137, "Grass Side", "grass 1", sf::Vector2i(3, 1));
 	Decoration* grass2 = new Decoration(38, 141, "Grass Side", "grass 2", sf::Vector2i(3, 1), 180);
@@ -62,6 +65,17 @@ void Game::Start()
 			Barrier* hut = new Barrier(27 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4 + 4), 1, sf::IntRect(0, 26, 80, 70));
 		}
 	}
+
+	// House 1
+	Building* JoeHouse = new Building(30, 136, "Blue House", "Joe's House", UseObject::UsePoint(32, 142, Entity::Up), UseObject::UsePoint(25, 33, Entity::Down));
+	SwitchObjectManager(false);
+	Map* floor1 = new Map(-35, 15, "Tiles", "Bottom Floor", sf::Vector2i(16, 16), "maps/blank.txt", 20, 20);
+	Barrier* wall1 = new Barrier(-35, 15, "Fence", "North Wall", sf::Vector2i(20, 1));
+	Barrier* wall2 = new Barrier(-35, 34, "Fence", "South Wall", sf::Vector2i(20, 1));
+	Barrier* wall3 = new Barrier(-16, 15, "Fence", "East Wall", sf::Vector2i(1, 20));
+	Barrier* wall4 = new Barrier(-35, 15, "Fence", "West Wall", sf::Vector2i(1, 20));
+	JoeHouse->SetFloorManager(_buildingObjectMananger);
+	SwitchObjectManager(true);
 
 	// ------------------------------------------Things drawn under Joe go above here------------------------------------------------
 	NPC* bob = new NPC(32, 120, "NPC 1", "Bob");
@@ -187,7 +201,27 @@ sf::RenderWindow& Game::GetWindow()
 
 GameObjectManager& Game::GetObjectManager()
 {
-	return _gameObjectManager;
+	if (_editingBuilding)
+	{
+		return _buildingObjectMananger;
+	}
+	else
+	{
+		return _gameObjectManager;
+	}
+}
+
+void Game::SwitchObjectManager(bool toMain)
+{
+	if (toMain)
+	{
+		_editingBuilding = false;
+		_buildingObjectMananger.Clear();
+	}
+	else
+	{
+		_editingBuilding = true;
+	}
 }
 
 ResourceManager& Game::GetResourceManager()
@@ -217,21 +251,27 @@ sf::Vector2i Game::GTS(std::string textureID)
 
 void Game::SetView(float newX, float newY)
 {
-	_view.setCenter(newX, newY); // Adjusts the center of the view
-	_mainWindow.setView(_view); // Applies view
+	if (!_screenLocked)
+	{
+		_view.setCenter(newX, newY); // Adjusts the center of the view
+		_mainWindow.setView(_view); // Applies view
+	}
 }
 
-void Game::Initialize(std::string name, VisibleGameObject* obj, float x, float y)
+void Game::LockView(bool lock)
 {
-	_gameObjectManager.Add(name, obj);
-	obj->SetPosition(x, y);
+	_screenLocked = lock;
 }
 
 Game::GameState Game::_gameState = Uninitialized;
 sf::RenderWindow Game::_mainWindow;
 GameObjectManager Game::_gameObjectManager;
+GameObjectManager Game::_buildingObjectMananger;
 ResourceManager Game::_resourceManager;
 CollisionManager Game::_collisionManager;
 DialogueManager Game::_dialogueManager;
 sf::Font Game::regular;
 sf::View Game::_view;
+
+bool Game::_editingBuilding;
+bool Game::_screenLocked;

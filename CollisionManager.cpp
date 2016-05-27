@@ -33,52 +33,103 @@ void CollisionManager::Update()
 
 void CollisionManager::CheckChunkCollisions(int chunk)
 {
-	std::vector<Entity*>::iterator it = EntityList[chunk].begin();
-	std::vector<Entity*>::iterator it2 = EntityList[chunk].begin();
-	while (it != EntityList[chunk].end())
+	if (chunk == -1)
 	{
-		it2 = it + 1; // Check an entity against all entities after it
-		while (it2 != EntityList[chunk].end())
+		std::vector<Entity*>::iterator it = BuildingList.begin();
+		std::vector<Entity*>::iterator it2 = BuildingList.begin();
+		while (it != BuildingList.end())
 		{
-			if (!((*it)->immovable == true && (*it2)->immovable == true)) // Don't bother if checking if both entities are immovable
+			it2 = it + 1; // Check an entity against all entities after it
+			while (it2 != BuildingList.end())
 			{
-				if ((*it)->CheckForCollision(*it2))
+				if (!((*it)->immovable == true && (*it2)->immovable == true)) // Don't bother if checking if both entities are immovable
 				{
-					(*it)->collided = true;
-					(*it2)->collided = true;
+					if ((*it)->CheckForCollision(*it2))
+					{
+						(*it)->collided = true;
+						(*it2)->collided = true;
+					}
 				}
+				it2++;
 			}
-			it2++;
+			it++; // Repeat for every entity
 		}
-		it++; // Repeat for every entity
+	}
+	else
+	{
+		std::vector<Entity*>::iterator it = EntityList[chunk].begin();
+		std::vector<Entity*>::iterator it2 = EntityList[chunk].begin();
+		while (it != EntityList[chunk].end())
+		{
+			it2 = it + 1; // Check an entity against all entities after it
+			while (it2 != EntityList[chunk].end())
+			{
+				if (!((*it)->immovable == true && (*it2)->immovable == true)) // Don't bother if checking if both entities are immovable
+				{
+					if ((*it)->CheckForCollision(*it2))
+					{
+						(*it)->collided = true;
+						(*it2)->collided = true;
+					}
+				}
+				it2++;
+			}
+			it++; // Repeat for every entity
+		}
 	}
 }
 
 void CollisionManager::Add(int chunk, Entity* ent)
 {
-	if (chunk > 8 || chunk < 0)
+	if (chunk == -1)
 	{
-		std::cout << ent->name << std::endl;
+		BuildingList.push_back(ent);
+	}
+	else if (chunk > 8 || chunk < 0)
+	{
+		std::cout << ent->name << ", Chunk: " << chunk << std::endl;
 		assert(false);
 	}
-	EntityList[chunk].push_back(ent);
+	else
+	{
+		EntityList[chunk].push_back(ent);
+	}
 }
 
 void CollisionManager::Remove(int chunk, Entity* ent)
 {
-	// Iterating from the reverse will be faster since entities switching chunks will most likely be at the end
-	std::vector<Entity*>::reverse_iterator it = EntityList[chunk].rbegin();
-	std::vector<Entity*>::reverse_iterator end = EntityList[chunk].rend();
-	while (it != end)
+	if (chunk == -1)
 	{
-		if (*it == ent)
+		std::vector<Entity*>::iterator it = BuildingList.begin();
+		while (it != BuildingList.end())
 		{
-			EntityList[chunk].erase(--(it.base()));
-			return;
+			if (*it == ent)
+			{
+				BuildingList.erase(it);
+				return;
+			}
+			else
+			{
+				it++;
+			}
 		}
-		else
+	}
+	else
+	{
+		// Iterating from the reverse will be faster since entities switching chunks will most likely be at the end
+		std::vector<Entity*>::reverse_iterator it = EntityList[chunk].rbegin();
+		std::vector<Entity*>::reverse_iterator end = EntityList[chunk].rend();
+		while (it != end)
 		{
-			it++;
+			if (*it == ent)
+			{
+				EntityList[chunk].erase(--(it.base()));
+				return;
+			}
+			else
+			{
+				it++;
+			}
 		}
 	}
 }

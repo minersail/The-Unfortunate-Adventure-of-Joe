@@ -2,6 +2,18 @@
 #include "UseObject.h"
 #include "Game.h"
 
+UseObject::UseObject(float initX, float initY, std::string textureID, std::string name, UsePoint point)
+	: Entity(initX, initY, textureID, name)
+{
+	activationLocs.push_back(point);
+}
+
+UseObject::UseObject(float initX, float initY, std::string textureID, std::string name, std::vector<UsePoint> points)
+	: Entity(initX, initY, textureID, name)
+{
+	activationLocs = points;
+}
+
 UseObject::UseObject(float initX, float initY, std::string textureID, std::string name, sf::IntRect hitbox)
 	: Entity(initX, initY, textureID, name, hitbox)
 {
@@ -24,6 +36,10 @@ bool UseObject::CheckUsePoints(sf::Event ev)
 			sf::RectangleShape unit;
 			unit.setSize(sf::Vector2f(16, 16));
 			unit.setPosition(it->x * 16, it->y * 16 - 8); // Adjust the UsePoints by half a unit
+
+			unit.setFillColor(sf::Color::Red);
+			Game::GetWindow().draw(unit);
+			Game::GetWindow().display();
 
 			if (unit.getGlobalBounds().contains(pX, pY))
 			{

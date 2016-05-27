@@ -23,6 +23,11 @@ public:
 		}
 	};
 
+	// This constructor takes in one activation point
+	UseObject(float initX, float initY, std::string textureID, std::string name, UsePoint point);
+	// This constructor takes in a vector of given points
+	UseObject(float initX, float initY, std::string textureID, std::string name, std::vector<UsePoint> points);
+	// Constructor that only takes in a hitbox and requires the inherited class to set the UsePoints
 	UseObject(float initX, float initY, std::string textureID, std::string name, sf::IntRect hitbox);
 	~UseObject();
 

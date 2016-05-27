@@ -52,6 +52,11 @@ void GameObjectManager::PrintObjects()
 	}
 }
 
+void GameObjectManager::Clear()
+{
+	_gameObjects.clear();
+}
+
 void GameObjectManager::DrawAll(sf::RenderWindow& renderWindow)
 {
 	std::vector<std::pair<std::string, VisibleGameObject*>>::const_iterator itr = _gameObjects.begin();
