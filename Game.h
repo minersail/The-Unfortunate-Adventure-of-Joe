@@ -5,6 +5,7 @@
 #include "CollisionManager.h"
 #include "DialogueManager.h"
 #include "Player.h"
+#include "Building.h"
 
 class Game {
 public:
@@ -16,13 +17,14 @@ public:
 	static DialogueManager& GetDialogueManager(); // Returns _dialogueManager
 
 	static sf::Font& GetFont(std::string fontID);
-	static Player* GetJoe(); // Returns Joe
+	static Player* GetPlayer(); // Returns Joe
 	// Short for GetTextureSize(); Intentionally short name for use in constructors before the texture is loaded
 	static sf::Vector2i GTS(std::string textureID);
 
 	static void SetView(float newX, float newY);
 	static void LockView(bool lock);
 	static void SwitchObjectManager(bool toMain);
+	static void StartBuildingMode(Building* building);
 
 	const static int SCREEN_HEIGHT = 800;
 	const static int SCREEN_WIDTH = 800;
@@ -30,7 +32,7 @@ public:
 	const static int XCHUNKS = 3;
 
 	enum GameState {
-		Uninitialized, Paused, Talking,
+		Uninitialized, Paused, Talking, InBuilding,
 		ShowingWorld, Playing, Exiting, GameOver
 	};
 
@@ -46,11 +48,13 @@ private:
 	static sf::RenderWindow _mainWindow; // main window. duh
 	static sf::View _view;
 	static GameObjectManager _gameObjectManager; // Main GameObjectManager
-	static GameObjectManager _buildingObjectMananger; // GameObjectManager for the current Building
+	static GameObjectManager _buildingObjectMananger; // GameObjectManager for initializing buildings
 	static ResourceManager _resourceManager; // ResourceManager
 	static CollisionManager _collisionManager; // CollisionManager
 	static DialogueManager _dialogueManager; // DialogueManager
 
 	static bool _editingBuilding;
 	static bool _screenLocked;
+
+	static Building* _currentBuilding;
 };

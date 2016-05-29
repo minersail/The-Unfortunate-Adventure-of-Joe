@@ -9,13 +9,13 @@ Messenger::Messenger(float initX, float initY, std::string textureID, std::strin
 {
 	SetTextureRect(GetTextureRect().width * 3 / 4, 0, GetTextureRect().width / 4, GetTextureRect().height / 4);
 
-	sf::Vector2i CoordVec(std::floor((GetPosition().x + GetHitBox().left) / 16),
-						  std::floor((GetPosition().y + GetHitBox().top) / 16));
+	sf::Vector2i CoordVec(std::floor((GetPosition().x) / 16),
+						  std::floor((GetPosition().y) / 16));
 
-	activationLocs.push_back(UsePoint(CoordVec.x + 1, CoordVec.y, Left));
-	activationLocs.push_back(UsePoint(CoordVec.x - 1, CoordVec.y, Right));
-	activationLocs.push_back(UsePoint(CoordVec.x, CoordVec.y + 1, Up));
-	activationLocs.push_back(UsePoint(CoordVec.x, CoordVec.y - 1, Down));
+	GetActivationLocations().push_back(UsePoint(CoordVec.x + 1, CoordVec.y, Left));
+	GetActivationLocations().push_back(UsePoint(CoordVec.x - 1, CoordVec.y, Right));
+	GetActivationLocations().push_back(UsePoint(CoordVec.x, CoordVec.y + 1, Up));
+	GetActivationLocations().push_back(UsePoint(CoordVec.x, CoordVec.y - 1, Down));
 
 	immovable = true;
 }
@@ -28,7 +28,7 @@ void Messenger::Update(float deltaTime, sf::Event ev)
 {
 	if (CheckUsePoints(ev))
 	{
-		sf::IntRect joeRect = Game::GetJoe()->GetTextureRect();
+		sf::IntRect joeRect = Game::GetPlayer()->GetTextureRect();
 		// Have the Messenger face Joe after talking
 		if (joeRect.left == joeRect.width * 0)
 			SetTextureRect(GetTextureRect().width * 2, 0, GetTextureRect().width, GetTextureRect().height);

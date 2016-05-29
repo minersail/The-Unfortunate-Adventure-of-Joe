@@ -82,17 +82,3 @@ void Player::Update(float deltaTime, sf::Event ev)
 	Game::SetView(std::max(float(Game::SCREEN_WIDTH / 2), std::min(float(Game::SCREEN_WIDTH * Game::XCHUNKS - Game::SCREEN_WIDTH / 2), GetPosition().x)), 
 				  std::max(float(Game::SCREEN_HEIGHT / 2), std::min(float(Game::SCREEN_HEIGHT * Game::YCHUNKS - Game::SCREEN_HEIGHT / 2), GetPosition().y)));
 }
-
-void Player::Draw(sf::RenderWindow& rw)
-{
-	rw.draw(GetSprite());
-
-	/*sf::RectangleShape hitbox;
-	hitbox.setSize(sf::Vector2f(GetHitBox().width, GetHitBox().height));
-	hitbox.setOutlineColor(sf::Color::Red);
-	hitbox.setFillColor(sf::Color(255, 255, 255, 0));
-	hitbox.setOutlineThickness(2);
-	hitbox.setOrigin(GetHitBox().width / 2, GetHitBox().height / 2);
-	hitbox.setPosition(GetPosition().x + GetHitBox().left, GetPosition().y + GetHitBox().top);
-	rw.draw(hitbox);*/
-}

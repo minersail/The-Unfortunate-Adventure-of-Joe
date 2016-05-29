@@ -31,10 +31,10 @@ public:
 	UseObject(float initX, float initY, std::string textureID, std::string name, sf::IntRect hitbox);
 	~UseObject();
 
-
+	std::vector<UsePoint>& GetActivationLocations();
 	// Returns true if the player is overlapping one of the UsePoints with the correct direction
 	bool CheckUsePoints(sf::Event ev);
 
-protected:
+private:
 	std::vector<UsePoint> activationLocs;
 };

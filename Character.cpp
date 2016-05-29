@@ -5,13 +5,12 @@
 
 Character::Character(float initX, float initY, std::string textureID, std::string name)
 	: Entity(initX, initY, textureID, name, sf::IntRect(0, // See Barrier() to know why this was implemented
-	Game::GTS(textureID).y / 16, Game::GTS(textureID).x / 4, Game::GTS(textureID).y / 4 / 2)), speed(2)
+	Game::GTS(textureID).y / 4 / 2, Game::GTS(textureID).x / 4, Game::GTS(textureID).y / 4 / 2)), speed(2)
 {
 	charW = GetSprite().getTexture()->getSize().x / 4;
 	charH = GetSprite().getTexture()->getSize().y / 4;
 
 	SetTextureRect(0, 0, charW, charH);
-	GetSprite().setOrigin(charW / 2, charH / 2);
 
 	immovable = false;
 }

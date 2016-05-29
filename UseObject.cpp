@@ -27,23 +27,24 @@ bool UseObject::CheckUsePoints(sf::Event ev)
 {
 	if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Space)
 	{
-		float pX = Game::GetJoe()->GetPosition().x + Game::GetJoe()->GetHitBox().left;
-		float pY = Game::GetJoe()->GetPosition().y + Game::GetJoe()->GetHitBox().top;
+		float pX = Game::GetPlayer()->GetPosition().x; // HitBox's origin
+		float pY = Game::GetPlayer()->GetPosition().y;
 
 		std::vector<UsePoint>::iterator it = activationLocs.begin();
 		while (it != activationLocs.end())
 		{
 			sf::RectangleShape unit;
 			unit.setSize(sf::Vector2f(16, 16));
-			unit.setPosition(it->x * 16, it->y * 16 - 8); // Adjust the UsePoints by half a unit
+			unit.setPosition(it->x * 16, it->y * 16 - 8); // Adjust UsePoints by half a unit
 
-			unit.setFillColor(sf::Color::Red);
+			// Debug for UsePoints--KEEP
+			/*unit.setFillColor(sf::Color::Red);
 			Game::GetWindow().draw(unit);
-			Game::GetWindow().display();
+			Game::GetWindow().display();*/
 
 			if (unit.getGlobalBounds().contains(pX, pY))
 			{
-				sf::IntRect joeRect = Game::GetJoe()->GetTextureRect();
+				sf::IntRect joeRect = Game::GetPlayer()->GetTextureRect();
 				if (joeRect.left == joeRect.width * 0 && it->dir == Up)
 					return true;
 				if (joeRect.left == joeRect.width * 1 && it->dir == Right)
@@ -58,4 +59,9 @@ bool UseObject::CheckUsePoints(sf::Event ev)
 		}
 	}
 	return false;
+}
+
+std::vector<UseObject::UsePoint>& UseObject::GetActivationLocations()
+{
+	return activationLocs;
 }

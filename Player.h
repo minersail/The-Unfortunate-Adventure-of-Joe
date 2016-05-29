@@ -9,7 +9,6 @@ public:
 	~Player();
 
 	void Update(float deltaTime, sf::Event ev);
-	void Draw(sf::RenderWindow& rw);
 
 	Direction keyPressed;
 

@@ -11,6 +11,7 @@ public:
 	Entity(float initX, float initY, std::string textureID, std::string name, sf::IntRect customHB);
 	~Entity();
 	virtual void Update(float deltaTime, sf::Event ev);
+	virtual void Draw(sf::RenderWindow& rw);
 
 	// Gets vertices of rectangle, regardless of rotation
 	std::vector<sf::Vector2f> GetVertices();
@@ -34,6 +35,7 @@ public:
 	// Boolean for whether or not the entity has registered a collision this tick
 	bool collided;
 	bool immovable;
+	bool drawHitBox;
 
 	enum Direction
 	{

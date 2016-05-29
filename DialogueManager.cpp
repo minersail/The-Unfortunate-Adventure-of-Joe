@@ -10,6 +10,15 @@ DialogueManager::DialogueManager()
 	D1.push_back(std::make_pair("Shut up", 1));
 	D1.push_back(std::make_pair("Uh.. Goodbye", 0));
 	MasterDialogueList.push_back(D1);
+
+	std::vector<std::pair<std::string, int>> D2;
+	D2.push_back(std::make_pair("Who are you?", 0));
+	D2.push_back(std::make_pair("I......uh.....", 1));
+	D2.push_back(std::make_pair("What are you doing in my house?", 0));
+	D2.push_back(std::make_pair("Err......um.....", 1));
+	D2.push_back(std::make_pair("*Explosive Fart*", 1));
+	D2.push_back(std::make_pair("Oh god you can keep the house", 0));
+	MasterDialogueList.push_back(D2);
 }
 
 DialogueManager::~DialogueManager()
@@ -24,7 +33,14 @@ void DialogueManager::Manage(sf::Event ev, sf::RenderWindow& rw)
 	{
 		if (talkIter == diaSeq.size() - 1)
 		{
-			Game::_gameState = Game::Playing;
+			if (Game::GetPlayer()->GetPosition().x > 0) // If player is in the building chunk
+			{
+				Game::_gameState = Game::Playing;
+			}
+			else
+			{
+				Game::_gameState = Game::InBuilding;
+			}
 			return;
 		}
 		else
@@ -44,10 +60,10 @@ void DialogueManager::Manage(sf::Event ev, sf::RenderWindow& rw)
 
 	if (diaSeq[talkIter].second == 0)
 	{
-		NPCsprite.setTexture(Game::GetResourceManager().Get("Joe"));
-		NPCsprite.setTextureRect(sf::IntRect(Game::GetResourceManager().Get("Joe").getSize().x * 2 / 4, 0, 
-			Game::GetResourceManager().Get("Joe").getSize().x / 4, Game::GetResourceManager().Get("Joe").getSize().y / 4));
-		NPCname.setString("Joe");
+		NPCsprite.setTexture(Game::GetResourceManager().Get(Game::GetPlayer()->textureName));
+		NPCsprite.setTextureRect(sf::IntRect(Game::GetResourceManager().Get(Game::GetPlayer()->textureName).getSize().x * 2 / 4, 0,
+			Game::GetResourceManager().Get(Game::GetPlayer()->textureName).getSize().x / 4, Game::GetResourceManager().Get(Game::GetPlayer()->textureName).getSize().y / 4));
+		NPCname.setString(Game::GetPlayer()->name);
 	}
 	else if (diaSeq[talkIter].second == 1)
 	{

@@ -10,8 +10,8 @@ Barrier::Barrier(float initX, float initY, std::string textureID, std::string na
 	(customHitBox == sf::IntRect(0, 0, 0, 0) ? sf::IntRect(0, 0, Game::GTS(textureID).x / animationFrames, Game::GTS(textureID).y) : customHitBox)),
 	tiled(false), maxFrame(animationFrames), currentFrame(1), tiledSize(sf::Vector2f(0, 0))
 {
-	immovable = true;
 	Animate();
+	immovable = true;
 }
 
 Barrier::Barrier(float initX, float initY, std::string textureID, std::string name, sf::Vector2i size, int animationFrames, sf::IntRect customHitBox)
@@ -102,6 +102,14 @@ void Barrier::Draw(sf::RenderWindow& rw)
 	hitbox.setFillColor(sf::Color(255, 255, 255, 0));
 	hitbox.setOutlineThickness(2);
 	hitbox.setOrigin(GetHitBox().width / 2, GetHitBox().height / 2);
-	hitbox.setPosition(GetPosition().x + GetHitBox().left, GetPosition().y + GetHitBox().top);
-	rw.draw(hitbox);*/
+	hitbox.setPosition(GetPosition().x, GetPosition().y);
+	rw.draw(hitbox);
+
+	sf::CircleShape center;
+	center.setRadius(3);
+	center.setOrigin(1.5, 1.5);
+	center.setPointCount(15);
+	center.setPosition(GetPosition().x, GetPosition().y);
+	center.setFillColor(sf::Color::Blue);
+	rw.draw(center);*/
 };
