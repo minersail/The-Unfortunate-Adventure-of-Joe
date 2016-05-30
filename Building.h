@@ -13,9 +13,11 @@ public:
 	void Update(float deltaTime, sf::Event ev);
 	void SetFloorManager(GameObjectManager& objMnger);
 	GameObjectManager& GetFloorManager();
+	std::vector<Entity*>& GetCollisionList();
 
 	UsePoint exitPoint;
 
 private:
 	GameObjectManager floorManager;
+	std::vector<Entity*> collisionList;
 };

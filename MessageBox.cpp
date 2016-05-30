@@ -23,9 +23,8 @@ MessageBox::~MessageBox()
 
 void MessageBox::Draw(sf::RenderWindow& rw)
 {
-	sf::Vector2f adjustedPos = Game::GetWindow().mapPixelToCoords(sf::Vector2i(400, 720)); // Transfer the world coordinates to screen coordinates
-	SetPosition(adjustedPos);
-	text.setPosition(adjustedPos);
+	SetPosition(400, 720, true);
+	text.setPosition(GetPosition());
 
 	rw.draw(GetSprite());
 	rw.draw(text);

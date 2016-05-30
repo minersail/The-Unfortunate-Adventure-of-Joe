@@ -133,3 +133,19 @@ void CollisionManager::Remove(int chunk, Entity* ent)
 		}
 	}
 }
+
+void CollisionManager::SwitchBuildingList(std::vector<Entity*>& newList)
+{
+	BuildingList.clear();
+	std::vector<Entity*>::iterator it = newList.begin();
+	while (it != newList.end())
+	{
+		BuildingList.push_back(*it);
+		it++;
+	}
+}
+
+std::vector<Entity*>& CollisionManager::GetBuildingList()
+{
+	return BuildingList;
+}

@@ -14,6 +14,8 @@ public:
 	void CheckChunkCollisions(int chunk);
 	void Add(int chunk, Entity* ent);
 	void Remove(int chunk, Entity* ent);
+	void SwitchBuildingList(std::vector<Entity*>& newList);
+	std::vector<Entity*>& GetBuildingList();
 
 private:
 	// Master list of lists; Each sub-list contains all entities in a chunk

@@ -27,6 +27,8 @@ ResourceManager::ResourceManager()
 	Load("images/wall.png", "Wall");
 	Load("images/wallcorner.png", "Wall Corner");
 	Load("images/door.png", "Door");
+	Load("images/inventory.png", "Inventory");
+	Load("images/apple.png", "Apple");
 }
 
 ResourceManager::~ResourceManager()

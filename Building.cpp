@@ -41,3 +41,8 @@ GameObjectManager& Building::GetFloorManager()
 {
 	return floorManager;
 }
+
+std::vector<Entity*>& Building::GetCollisionList()
+{
+	return collisionList;
+}

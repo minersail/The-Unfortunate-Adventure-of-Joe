@@ -19,8 +19,8 @@ public:
 	virtual void Draw(sf::RenderWindow & window);
 	virtual void Update(float deltaTime, sf::Event ev);
 
-	virtual void SetPosition(float x, float y);
-	virtual void SetPosition(sf::Vector2f newPos);
+	virtual void SetPosition(float x, float y, bool absolute = false);
+	virtual void SetPosition(sf::Vector2f newPos, bool absolute = false);
 	virtual void SetRotation(float angle);
 	virtual void SetTextureRect(int left, int top, int width, int height);
 	// Inheritable, overridable function to manage chunk data

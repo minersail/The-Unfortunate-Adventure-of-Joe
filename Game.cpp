@@ -7,6 +7,8 @@
 #include "NPC.h"
 #include "Messenger.h"
 #include "Building.h"
+#include "Item.h"
+#include "QuestGiver.h"
 
 void Game::Start()
 {
@@ -21,109 +23,137 @@ void Game::Start()
 	_mainWindow.setView(_view);
 
 	_editingBuilding = false;
-	_currentBuilding = NULL;
 
-	// Pointer name means absolutely nothing////////////////////////////////////////////////////////
-	Map* board0 = new Map(0, 0, "Tiles", "Map", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
-	Map* board1 = new Map(50, 0, "Tiles", "Map 2", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
-	Map* board2 = new Map(100, 0, "Tiles", "Map 3", sf::Vector2i(16, 16), "maps/7.txt", 50, 50);
-	Map* board3 = new Map(0, 50, "Tiles", "Map 4", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
-	Map* board4 = new Map(50, 50, "Tiles", "Map 5", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
-	Map* board5 = new Map(100, 50, "Tiles", "Map 6", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
-	Map* board6 = new Map(0, 100, "Tiles", "Map 7", sf::Vector2i(16, 16), "maps/6.txt", 50, 50);
-	Map* board7 = new Map(50, 100, "Tiles", "Map 8", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
-	Map* board8 = new Map(100, 100, "Tiles", "Map 9", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	/////////////////////////////////////INITIALIZATION////////////////////////////////////////////////////////
+	new Map(0, 0, "Tiles", "Map 0", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	new Map(50, 0, "Tiles", "Map 1", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	new Map(100, 0, "Tiles", "Map 2", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	new Map(0, 50, "Tiles", "Map 3", sf::Vector2i(16, 16), "maps/3.txt", 50, 50);
+	new Map(50, 50, "Tiles", "Map 4", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	new Map(100, 50, "Tiles", "Map 5", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	new Map(0, 100, "Tiles", "Map 6", sf::Vector2i(16, 16), "maps/6.txt", 50, 50);
+	new Map(50, 100, "Tiles", "Map 7", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
+	new Map(100, 100, "Tiles", "Map 8", sf::Vector2i(16, 16), "maps/blank.txt", 50, 50);
 
 	//////////////////////////////////GAME BORDERS///////////////////////////////////////////
-	Barrier* NorthBorder = new Barrier(0, 0, "Fence", "North Border", sf::Vector2i(149, 1));
-	Barrier* SouthBorder = new Barrier(0, 149, "Fence", "South Border", sf::Vector2i(149, 1));
-	Barrier* EastBorder = new Barrier(149, 0, "Fence", "East Border", sf::Vector2i(1, 149));
-	Barrier* WestBorder = new Barrier(0, 0, "Fence", "West Border", sf::Vector2i(1, 149));
+	new Barrier(0, 0, "Fence", "North Border", sf::Vector2i(149, 1));
+	new Barrier(0, 149, "Fence", "South Border", sf::Vector2i(149, 1));
+	new Barrier(149, 0, "Fence", "East Border", sf::Vector2i(1, 149));
+	new Barrier(0, 0, "Fence", "West Border", sf::Vector2i(1, 149));
 	/////////////////////////////////////////////////////////////////////////////////////////
-
-	// Tile 6
-	Barrier* animLake = new Barrier(37, 137, "Water", "lake 1", sf::Vector2i(5, 5), 3);
-	//Barrier* hut1 = new Barrier(30, 136, "Blue House", "hut 1", 1, sf::IntRect(0, 26, 80, 70));
-	Barrier* fence5 = new Barrier(50, 100, "Fence", "Orchard Lake East Fence", sf::Vector2i(1, 50));
-	Decoration* grass1 = new Decoration(38, 137, "Grass Side", "grass 1", sf::Vector2i(3, 1));
-	Decoration* grass2 = new Decoration(38, 141, "Grass Side", "grass 2", sf::Vector2i(3, 1), 180);
-	Decoration* grass3 = new Decoration(37, 138, "Grass Side", "grass 3", sf::Vector2i(1, 3), 270);
-	Decoration* grass4 = new Decoration(41, 138, "Grass Side", "grass 4", sf::Vector2i(1, 3), 90);
-	Decoration* grass5 = new Decoration(37, 137, "Grass Corner 2", "grass 5");
-	Decoration* grass6 = new Decoration(37, 142, "Grass Corner 2", "grass 6", 270);
-	Decoration* grass7 = new Decoration(42, 142, "Grass Corner 2", "grass 7", 180);
-	Decoration* grass8 = new Decoration(42, 137, "Grass Corner 2", "grass 8", 90);
 	
-	// Tile 3
-	for (int j = 0; j < 4; j++)
+							// TILE 3 //
+	new Barrier(50, 50, "Fence", "Orchard Lake East Fence", sf::Vector2i(1, 100));
+
+							// TILE 6 //
+	new Barrier(37, 137, "Water", "lake 1", sf::Vector2i(5, 5), 3);
+	new Barrier(37, 127, "Blue House", "some house", 1, sf::IntRect(0, 26, 80, 70));
+	new Barrier(37, 115, "Blue House", "some house 3", 1, sf::IntRect(0, 26, 80, 70));
+	new Barrier(1, 109, "Blue House", "some house 2", 1, sf::IntRect(0, 26, 80, 70));
+	new Decoration(38, 137, "Grass Side", "grass 1", sf::Vector2i(3, 1));
+	new Decoration(38, 141, "Grass Side", "grass 2", sf::Vector2i(3, 1), 180);
+	new Decoration(37, 138, "Grass Side", "grass 3", sf::Vector2i(1, 3), 270);
+	new Decoration(41, 138, "Grass Side", "grass 4", sf::Vector2i(1, 3), 90);
+	new Decoration(37, 137, "Grass Corner 2", "grass 5");
+	new Decoration(37, 142, "Grass Corner 2", "grass 6", 270);
+	new Decoration(42, 142, "Grass Corner 2", "grass 7", 180);
+	new Decoration(42, 137, "Grass Corner 2", "grass 8", 90);
+
+	for (int i = 0; i < 9; i++)
 	{
-		for (int i = 0; i < 3; i++)
-		{
-			Barrier* hut = new Barrier(6 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4), 1, sf::IntRect(0, 26, 80, 70));
-		}
-		for (int i = 0; i < 3; i++)
-		{
-			Barrier* hut = new Barrier(27 + i * 6, 59 + j * 10, "Blue House", "hut " + std::to_string(i + j * 4 + 4), 1, sf::IntRect(0, 26, 80, 70));
-		}
+		Item* apple = new Item(15 + i, 133, "Apple", "Apple");
 	}
 
 	// House 1
 	Building* JoeHouse = new Building(30, 136, "Blue House", "Joe's House", UseObject::UsePoint(32, 142, Entity::Up), UseObject::UsePoint(-25, 33, Entity::Down), sf::IntRect(0, 26, 80, 70));
-	SwitchObjectManager(false);
-	Map* floor1 = new Map(-35, 15, "Building Tiles", "Bottom Floor", sf::Vector2i(16, 16), "maps/joehouse.txt", 20, 20);
-	Barrier* wall1 = new Barrier(-35, 15, "Floor", "North Wall", sf::Vector2i(20, 1));
-	Barrier* wall2 = new Barrier(-35, 34, "Floor", "South Wall", sf::Vector2i(20, 1));
-	Barrier* wall3 = new Barrier(-16, 15, "Floor", "East Wall", sf::Vector2i(1, 20));
-	Barrier* wall4 = new Barrier(-35, 15, "Floor", "West Wall", sf::Vector2i(1, 20));
-	Decoration* walld1 = new Decoration(-35, 15, "Wall", "North Wall Decoration", sf::Vector2i(20, 1), 90);
-	Decoration* walld2 = new Decoration(-35, 34, "Wall", "South Wall Decoration", sf::Vector2i(20, 1), 270);
-	Decoration* walld3 = new Decoration(-16, 15, "Wall", "East Wall Decoration", sf::Vector2i(1, 20), 180);
-	Decoration* walld4 = new Decoration(-35, 15, "Wall", "West Wall Decoration", sf::Vector2i(1, 20), 0);
-	Decoration* wallc1 = new Decoration(-15, 15, "Wall Corner", "Wall Corner 1", 90);
-	Decoration* wallc2 = new Decoration(-35, 35, "Wall Corner", "Wall Corner 2", 270);
-	Decoration* wallc3 = new Decoration(-15, 35, "Wall Corner", "Wall Corner 3", 180);
-	Decoration* wallc4 = new Decoration(-35, 15, "Wall Corner", "Wall Corner 4", 0);
-	Decoration* door = new Decoration(-24, 35, "Door", "Door", 180);
-	Messenger* oldman = new Messenger(-25, 30, "Old Man", "Old Fart", 2);
-	JoeHouse->SetFloorManager(_buildingObjectMananger);
-	SwitchObjectManager(true);
+	SwitchObjectManager(JoeHouse);
+	new Map(-35, 15, "Building Tiles", "Bottom Floor", sf::Vector2i(16, 16), "maps/joehouse.txt", 20, 20);
+	new Barrier(-35, 15, "Floor", "North Wall", sf::Vector2i(20, 1));
+	new Barrier(-35, 34, "Floor", "South Wall", sf::Vector2i(20, 1));
+	new Barrier(-16, 15, "Floor", "East Wall", sf::Vector2i(1, 20));
+	new Barrier(-35, 15, "Floor", "West Wall", sf::Vector2i(1, 20));
+	new Decoration(-35, 15, "Wall", "North Wall Decoration", sf::Vector2i(20, 1), 90);
+	new Decoration(-35, 34, "Wall", "South Wall Decoration", sf::Vector2i(20, 1), 270);
+	new Decoration(-16, 15, "Wall", "East Wall Decoration", sf::Vector2i(1, 20), 180);
+	new Decoration(-35, 15, "Wall", "West Wall Decoration", sf::Vector2i(1, 20), 0);
+	new Decoration(-15, 15, "Wall Corner", "Wall Corner 1", 90);
+	new Decoration(-35, 35, "Wall Corner", "Wall Corner 2", 270);
+	new Decoration(-15, 35, "Wall Corner", "Wall Corner 3", 180);
+	new Decoration(-35, 15, "Wall Corner", "Wall Corner 4", 0);
+	new Decoration(-24, 35, "Door", "Door", 180);
+	new Messenger(-25, 30, "Old Man", "Old Fart", 2);
+	JoeHouse->GetCollisionList() = _collisionManager.GetBuildingList();
+	SwitchObjectManager();
+
+	// House 2
+	Building* LarryHouse = new Building(1, 133, "Blue House", "Larry's House", UseObject::UsePoint(3, 139, Entity::Up), UseObject::UsePoint(-25, 33, Entity::Down), sf::IntRect(0, 26, 80, 70));
+	SwitchObjectManager(LarryHouse);
+	new Map(-35, 15, "Building Tiles", "Bottom Floor", sf::Vector2i(16, 16), "maps/joehouse.txt", 20, 20);
+	new Barrier(-35, 15, "Floor", "North Wall", sf::Vector2i(20, 1));
+	new Barrier(-35, 34, "Floor", "South Wall", sf::Vector2i(20, 1));
+	new Barrier(-16, 15, "Floor", "East Wall", sf::Vector2i(1, 20));
+	new Barrier(-35, 15, "Floor", "West Wall", sf::Vector2i(1, 20));
+	new Decoration(-35, 15, "Wall", "North Wall Decoration", sf::Vector2i(20, 1), 90);
+	new Decoration(-35, 34, "Wall", "South Wall Decoration", sf::Vector2i(20, 1), 270);
+	new Decoration(-16, 15, "Wall", "East Wall Decoration", sf::Vector2i(1, 20), 180);
+	new Decoration(-35, 15, "Wall", "West Wall Decoration", sf::Vector2i(1, 20), 0);
+	new Decoration(-15, 15, "Wall Corner", "Wall Corner 1", 90);
+	new Decoration(-35, 35, "Wall Corner", "Wall Corner 2", 270);
+	new Decoration(-15, 35, "Wall Corner", "Wall Corner 3", 180);
+	new Decoration(-35, 15, "Wall Corner", "Wall Corner 4", 0);
+	new Decoration(-24, 35, "Door", "Door", 180);
+	LarryHouse->GetCollisionList() = _collisionManager.GetBuildingList();
+	SwitchObjectManager();
+
+	// House 3
+	Building* DerbHouse = new Building(1, 119, "Blue House", "Derb's House", UseObject::UsePoint(3, 125, Entity::Up), UseObject::UsePoint(-25, 33, Entity::Down), sf::IntRect(0, 26, 80, 70));
+	SwitchObjectManager(DerbHouse);
+	new Map(-35, 15, "Building Tiles", "Bottom Floor", sf::Vector2i(16, 16), "maps/joehouse.txt", 20, 20);
+	new Barrier(-35, 15, "Floor", "North Wall", sf::Vector2i(20, 1));
+	new Barrier(-35, 34, "Floor", "South Wall", sf::Vector2i(20, 1));
+	new Barrier(-16, 15, "Floor", "East Wall", sf::Vector2i(1, 20));
+	new Barrier(-35, 15, "Floor", "West Wall", sf::Vector2i(1, 20));
+	new Decoration(-35, 15, "Wall", "North Wall Decoration", sf::Vector2i(20, 1), 90);
+	new Decoration(-35, 34, "Wall", "South Wall Decoration", sf::Vector2i(20, 1), 270);
+	new Decoration(-16, 15, "Wall", "East Wall Decoration", sf::Vector2i(1, 20), 180);
+	new Decoration(-35, 15, "Wall", "West Wall Decoration", sf::Vector2i(1, 20), 0);
+	new Decoration(-15, 15, "Wall Corner", "Wall Corner 1", 90);
+	new Decoration(-35, 35, "Wall Corner", "Wall Corner 2", 270);
+	new Decoration(-15, 35, "Wall Corner", "Wall Corner 3", 180);
+	new Decoration(-35, 15, "Wall Corner", "Wall Corner 4", 0);
+	new Decoration(-24, 35, "Door", "Door", 180);
+	DerbHouse->GetCollisionList() = _collisionManager.GetBuildingList();
+	SwitchObjectManager();
 
 	// ------------------------------------------Things drawn under Joe go above here------------------------------------------------
-	NPC* bob = new NPC(32, 120, "NPC 1", "Bob");
-	NPC* bob1 = new NPC(32, 120, "NPC 1", "Bobb");
-	NPC* bob2 = new NPC(32, 120, "NPC 1", "Bobbb");
-	NPC* bob3 = new NPC(32, 120, "NPC 1", "Bbob");
-	NPC* bob4 = new NPC(32, 120, "NPC 1", "Booob");
-	NPC* bob5 = new NPC(32, 120, "NPC 1", "Boooob");
-	NPC* bob6 = new NPC(32, 120, "NPC 1", "Bboob");
-	NPC* bob7 = new NPC(32, 120, "NPC 1", "Baob");
-	NPC* bob8 = new NPC(32, 120, "NPC 1", "Bofb");
-	NPC* bob9 = new NPC(32, 120, "NPC 1", "Bsob");
-	NPC* bob10 = new NPC(32, 120, "NPC 1", "Bodb");
-	NPC* bob11 = new NPC(32, 120, "NPC 1", "aBob");	
+	new NPC(32, 120, "NPC 1", "Bob");
+	new NPC(32, 120, "NPC 1", "Bobb");
+	new NPC(32, 120, "NPC 1", "Bobbb");
+	new NPC(32, 120, "NPC 1", "Bbob");
+	new NPC(32, 120, "NPC 1", "Booob");
+	new NPC(32, 120, "NPC 1", "Boooob");
 	
-	Player* joe = new Player(34, 142, "Will", "Joe");
+	new Player(34, 142, "Joe", "Joe");
 
-	Messenger* larry = new Messenger(24, 137, "NPC 2", "Steve", 1);
+	new Messenger(3, 138, "NPC 2", "Steve", 1);
+	new Messenger(25, 89, "Will", "Will", 3);
+
+	new QuestGiver(14, 125, "Sister", "Sister", 4, 1);
 	// ------------------------------------------Things drawn over Joe go below here-------------------------------------------------
-
-	// Tile 6
-	Decoration* hut1top = new Decoration(30, 136, "Blue House Roof", "hut 1 roof");
 	
-	// Tile 3
-	for (int j = 0; j < 4; j++)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			Decoration* hut = new Decoration(6 + i * 6, 59 + j * 10, "Blue House Roof", "hut " + std::to_string(i + j * 4) + "roof");
-		}
-		for (int i = 0; i < 3; i++)
-		{
-			Decoration* hut = new Decoration(27 + i * 6, 59 + j * 10, "Blue House Roof", "hut " + std::to_string(i + j * 4 + 4) + "roof");
-		}
-	}
+							// TILE 3 //
+	
+
+							// TILE 6 //
+	new Decoration(30, 136, "Blue House Roof", "Joe roof");
+	new Decoration(1, 133, "Blue House Roof", "Larry roof");
+	new Decoration(1, 119, "Blue House Roof", "Derb roof");
+	new Decoration(37, 127, "Blue House Roof", "some roof");
+	new Decoration(37, 115, "Blue House Roof", "some roof 3");
+	new Decoration(1, 109, "Blue House Roof", "some roof 2");
 
 	///////////////////////////////////////////////////////////////////////////////////////////
+	_currentBuilding = NULL;
 	LoadFonts();
 
 	_gameState = Playing;
@@ -207,7 +237,7 @@ void Game::GameLoop()
 	{
 		_mainWindow.clear();
 		
-		if (_currentBuilding != NULL) // Joe is currently in a building
+		if (_currentBuilding != NULL) // Player is currently in a building
 		{
 			_currentBuilding->GetFloorManager().DrawAll(_mainWindow);
 		}
@@ -220,9 +250,21 @@ void Game::GameLoop()
 		_mainWindow.display();
 		break;
 	}
-	case Paused:
+	case Inventory:
 	{
-		_gameState = Playing;
+		_mainWindow.clear();
+
+		if (_currentBuilding != NULL) // Player is currently in a building
+		{
+			_currentBuilding->GetFloorManager().DrawAll(_mainWindow);
+		}
+		else
+		{
+			_gameObjectManager.DrawAll(_mainWindow);
+		}
+		
+		_inventoryManager.Manage(currentEvent, _mainWindow);
+		_mainWindow.display();
 		break;
 	}
 	case GameOver:
@@ -235,11 +277,6 @@ void Game::GameLoop()
 
 	if (currentEvent.type == sf::Event::Closed)
 		_gameState = Exiting;
-	if (currentEvent.type == sf::Event::KeyPressed)
-	{
-		if (currentEvent.key.code == sf::Keyboard::Escape)
-			_gameState = Paused;
-	}
 }
 
 void Game::LoadFonts()
@@ -264,7 +301,7 @@ GameObjectManager& Game::GetObjectManager()
 {
 	if (_editingBuilding)
 	{
-		return _buildingObjectMananger;
+		return _currentBuilding->GetFloorManager();
 	}
 	else
 	{
@@ -272,22 +309,24 @@ GameObjectManager& Game::GetObjectManager()
 	}
 }
 
-void Game::SwitchObjectManager(bool toMain)
+void Game::SwitchObjectManager(Building* building)
 {
-	if (toMain)
+	if (building != NULL)
 	{
-		_editingBuilding = false;
-		_buildingObjectMananger.Clear();
+		_editingBuilding = true;
+		_currentBuilding = building;
 	}
 	else
 	{
-		_editingBuilding = true;
+		_collisionManager.GetBuildingList().clear();
+		_editingBuilding = false;
 	}
 }
 
 void Game::StartBuildingMode(Building* building)
 {
 	_currentBuilding = building;
+	_collisionManager.SwitchBuildingList(building->GetCollisionList());
 	_gameState = InBuilding;
 }
 
@@ -306,9 +345,34 @@ DialogueManager& Game::GetDialogueManager()
 	return _dialogueManager;
 }
 
+InventoryManager& Game::GetInventoryManager()
+{
+	return _inventoryManager;
+}
+
+QuestManager& Game::GetQuestManager()
+{
+	return _questManager;
+}
+
 Player* Game::GetPlayer()
 {
 	return dynamic_cast<Player*>(_gameObjectManager.Get("Joe"));
+}
+
+sf::Vector2f Game::GetMousePos(bool absolute)
+{
+	if (absolute)
+	{
+		sf::Vector2i mousePos = sf::Mouse::getPosition(_mainWindow);
+		sf::Vector2f adjustedPos = _mainWindow.mapPixelToCoords(mousePos);
+		return adjustedPos;
+	}
+	else
+	{
+		sf::Vector2i mousePos = sf::Mouse::getPosition(_mainWindow);
+		return static_cast<sf::Vector2f>(mousePos);
+	}
 }
 
 sf::Vector2i Game::GTS(std::string textureID)
@@ -333,10 +397,11 @@ void Game::LockView(bool lock)
 Game::GameState Game::_gameState = Uninitialized;
 sf::RenderWindow Game::_mainWindow;
 GameObjectManager Game::_gameObjectManager;
-GameObjectManager Game::_buildingObjectMananger;
 ResourceManager Game::_resourceManager;
 CollisionManager Game::_collisionManager;
 DialogueManager Game::_dialogueManager;
+InventoryManager Game::_inventoryManager;
+QuestManager Game::_questManager;
 sf::Font Game::regular;
 sf::View Game::_view;
 

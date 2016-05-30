@@ -15,7 +15,15 @@ Player::~Player()
 
 void Player::Update(float deltaTime, sf::Event ev)
 {
+	//std::cout << PlayerInventory.GetItems().size() << std::endl;
 	UpdateChunk();
+
+	if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Escape)
+	{
+		Game::GetInventoryManager().SetQuestGiver(NULL);
+		Game::_gameState = Game::Inventory;
+		return;
+	}
 
 	if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::W)
 	{
@@ -81,4 +89,9 @@ void Player::Update(float deltaTime, sf::Event ev)
 	// Set the game's view to be on Joe, but not move off screen
 	Game::SetView(std::max(float(Game::SCREEN_WIDTH / 2), std::min(float(Game::SCREEN_WIDTH * Game::XCHUNKS - Game::SCREEN_WIDTH / 2), GetPosition().x)), 
 				  std::max(float(Game::SCREEN_HEIGHT / 2), std::min(float(Game::SCREEN_HEIGHT * Game::YCHUNKS - Game::SCREEN_HEIGHT / 2), GetPosition().y)));
+}
+
+Inventory& Player::GetInventory()
+{
+	return PlayerInventory;
 }

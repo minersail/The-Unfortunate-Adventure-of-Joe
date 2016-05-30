@@ -12,7 +12,7 @@ public:
 	Messenger(float initX, float initY, std::string textureID, std::string name, int talkID);
 	~Messenger();
 
-	void Update(float deltaTime, sf::Event ev);
+	virtual void Update(float deltaTime, sf::Event ev);
 
 	// Number corresponding to the dialogue stored in the DialogueManager
 	// 1-indexed

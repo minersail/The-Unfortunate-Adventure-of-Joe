@@ -1,24 +1,51 @@
 #include "stdafx.h"
 #include "DialogueManager.h"
 #include "Game.h"
+#include "QuestGiver.h"
 
 DialogueManager::DialogueManager()
 	: dialogueBox(0, 0), talkIter(0)
 {
-	std::vector<std::pair<std::string, int>> D1;
-	D1.push_back(std::make_pair("Hello", 0));
-	D1.push_back(std::make_pair("Shut up", 1));
-	D1.push_back(std::make_pair("Uh.. Goodbye", 0));
+	Dialogue D1;
+	D1.AddMessage("Hello", 0);
+	D1.AddMessage("Shut up", 1);
+	D1.AddMessage("Uh.. Goodbye", 0);
 	MasterDialogueList.push_back(D1);
 
-	std::vector<std::pair<std::string, int>> D2;
-	D2.push_back(std::make_pair("Who are you?", 0));
-	D2.push_back(std::make_pair("I......uh.....", 1));
-	D2.push_back(std::make_pair("What are you doing in my house?", 0));
-	D2.push_back(std::make_pair("Err......um.....", 1));
-	D2.push_back(std::make_pair("*Explosive Fart*", 1));
-	D2.push_back(std::make_pair("Oh god you can keep the house", 0));
+	Dialogue D2;
+	D2.AddMessage("Who are you?", 0);
+	D2.AddMessage("I......uh.....", 1);
+	D2.AddMessage("What are you doing in my house?", 0);
+	D2.AddMessage("Err......um.....", 1);
+	D2.AddMessage("*Explosive Fart*", 1);
+	D2.AddMessage("Oh god you can keep the house", 0);
 	MasterDialogueList.push_back(D2);
+
+	Dialogue D3;
+	D3.AddMessage("Did you know my mom is missing an arm?", 1);
+	D3.AddMessage("Really?", 0);
+	D3.AddMessage("No", 1);
+	D3.AddMessage("..what", 0);
+	D3.AddMessage("She actually died last year.", 1);
+	D3.AddMessage("Oh wow.. really?", 0);
+	D3.AddMessage("No", 1);
+	D3.AddMessage("...", 0);
+	D3.AddMessage("Well screw you Will", 0);
+	MasterDialogueList.push_back(D3);
+
+	Dialogue D4;
+	D4.AddMessage("I want pie", 0);
+	D4.AddMessage("What?", 1);
+	D4.AddMessage("Pie", 0);
+	D4.AddMessage("I mean, I guess I c..", 1);
+	D4.AddMessage("pie pie pie pie pie \n pie pie pie pie pie", 0);
+	D4.AddMessage("Fine, go get some apples.", 1);
+	D4.AddMessage("CONTINUE", -1);//----------------
+	D4.AddMessage("Did you get the apples yet?", 1);
+	D4.AddMessage("I'll need about five.", 1);
+	D4.AddMessage("LOOP", -1);
+	D4.AddMessage("Ok fine now go wait for your pie", 1);
+	MasterDialogueList.push_back(D4);
 }
 
 DialogueManager::~DialogueManager()
@@ -27,20 +54,13 @@ DialogueManager::~DialogueManager()
 
 void DialogueManager::Manage(sf::Event ev, sf::RenderWindow& rw)
 {
-	std::vector<std::pair<std::string, int>> diaSeq = MasterDialogueList[other->dialogueID - 1];
+	std::vector<std::pair<std::string, int>> diaSeq = MasterDialogueList[other->dialogueID - 1].dialogueSequence;
 
 	if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Space)
 	{
 		if (talkIter == diaSeq.size() - 1)
 		{
-			if (Game::GetPlayer()->GetPosition().x > 0) // If player is in the building chunk
-			{
-				Game::_gameState = Game::Playing;
-			}
-			else
-			{
-				Game::_gameState = Game::InBuilding;
-			}
+			EndDialogue();
 			return;
 		}
 		else
@@ -48,8 +68,6 @@ void DialogueManager::Manage(sf::Event ev, sf::RenderWindow& rw)
 			talkIter++;
 		}
 	}
-	dialogueBox.SetMessage(diaSeq[talkIter].first);
-	dialogueBox.Draw(rw);
 
 	// Create two drawable objects, one for the name of the NPC and the image of it
 	sf::Sprite NPCsprite;
@@ -58,6 +76,33 @@ void DialogueManager::Manage(sf::Event ev, sf::RenderWindow& rw)
 	NPCname.setCharacterSize(30);
 	NPCname.setColor(sf::Color::Black);
 
+	if (diaSeq[talkIter].second == -1) // Flag for command instead of dialogue
+	{
+		if (diaSeq[talkIter].first == "LOOP") // Loop command
+		{
+			QuestGiver* giver = dynamic_cast<QuestGiver*>(other);
+			if (giver != NULL) // Messenger is also a QuestGiver
+			{
+				EndDialogue(true);
+			}
+			else
+			{
+				EndDialogue();
+			}
+			return;
+		}
+		else if (diaSeq[talkIter].first == "CONTINUE") // Continue command
+		{
+			GetCurrentDialogue().resumeIndex = talkIter + 1;
+			EndDialogue();
+			return;
+		}
+		else
+		{
+			std::cout << "ERROR: INVALID DIALOGUE COMMAND CALLED" << std::endl;
+			assert(false);
+		}
+	}
 	if (diaSeq[talkIter].second == 0)
 	{
 		NPCsprite.setTexture(Game::GetResourceManager().Get(Game::GetPlayer()->textureName));
@@ -80,12 +125,57 @@ void DialogueManager::Manage(sf::Event ev, sf::RenderWindow& rw)
 	NPCsprite.setPosition(dialogueBox.GetPosition().x - SPRITE_OFFSET_X - NPCsprite.getLocalBounds().width / 2, dialogueBox.GetPosition().y - SPRITE_OFFSET_Y);
 	NPCname.setPosition(dialogueBox.GetPosition().x - TEXT_OFFSET_X - NPCname.getLocalBounds().width / 2, dialogueBox.GetPosition().y - TEXT_OFFSET_Y);
 
+	dialogueBox.SetMessage(diaSeq[talkIter].first);
+	dialogueBox.Draw(rw);
+
 	rw.draw(NPCname);
 	rw.draw(NPCsprite);
+}
+
+void DialogueManager::EndDialogue(bool toInventory)
+{
+	if (!toInventory) // This is only dialogue; Don't go to inventory screen
+	{
+		if (Game::GetPlayer()->GetPosition().x > 0) // If player is in the building chunk
+		{
+			Game::_gameState = Game::Playing;
+		}
+		else
+		{
+			Game::_gameState = Game::InBuilding;
+		}
+	}
+	else // Initiate Quest-giving
+	{
+		Game::_gameState = Game::Inventory;
+	}
+}
+
+void DialogueManager::AdvanceDialogue()
+{
+	std::vector<std::pair<std::string, int>>::iterator it = GetCurrentDialogue().dialogueSequence.begin();
+	while (it != GetCurrentDialogue().dialogueSequence.end())
+	{
+		if (it->second == -1)
+		{
+			if (it->first == "LOOP")
+			{
+				*it = std::make_pair("CONTINUE", -1); // Make sure that next time this is called it won't stumble on this loop again
+				GetCurrentDialogue().resumeIndex = it - GetCurrentDialogue().dialogueSequence.begin() + 1; // Advance the dialogue past the loop
+				return;
+			}
+		}
+		it++;
+	}
 }
 
 void DialogueManager::SetNPC(Messenger* otherM)
 {
 	other = otherM;
-	talkIter = 0; // SetNPC is called right before a dialogue sequence
+	talkIter = GetCurrentDialogue().resumeIndex; // SetNPC is called right before a dialogue sequence
+}
+
+DialogueManager::Dialogue& DialogueManager::GetCurrentDialogue()
+{
+	return MasterDialogueList[other->dialogueID - 1];
 }

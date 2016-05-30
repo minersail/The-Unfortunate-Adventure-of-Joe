@@ -34,14 +34,30 @@ void VisibleGameObject::Update(float deltaTime, sf::Event ev)
 {
 }
 
-void VisibleGameObject::SetPosition(float x, float y)
+void VisibleGameObject::SetPosition(float x, float y, bool absolute)
 {
-	_sprite.setPosition(x, y);
+	if (absolute)
+	{
+		sf::Vector2f adjustedPos = Game::GetWindow().mapPixelToCoords(sf::Vector2i(x, y)); // Screen coordinates instead of game coordinates
+		_sprite.setPosition(adjustedPos);
+	}
+	else
+	{
+		_sprite.setPosition(x, y);
+	}
 }
 
-void VisibleGameObject::SetPosition(sf::Vector2f newPos)
+void VisibleGameObject::SetPosition(sf::Vector2f newPos, bool absolute)
 {
-	_sprite.setPosition(newPos);
+	if (absolute)
+	{
+		sf::Vector2f adjustedPos = Game::GetWindow().mapPixelToCoords(sf::Vector2i(newPos)); // Screen coordinates instead of game coordinates
+		_sprite.setPosition(adjustedPos);
+	}
+	else
+	{
+		_sprite.setPosition(newPos);
+	}
 }
 
 void VisibleGameObject::SetRotation(float angle)
